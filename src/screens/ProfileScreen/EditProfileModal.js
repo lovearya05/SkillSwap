@@ -32,7 +32,6 @@ const AddSkillModal = ({ addSkillType='', setAddSkillType, onClose, onAddSkill }
 
   const { user, userData, updateUserData, logout, login } = useAuth();
 
-  console.log('userData --- >', userData)
 
   const handleAddSkill = () => {
     if(userData.email){

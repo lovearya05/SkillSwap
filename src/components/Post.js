@@ -1,22 +1,38 @@
+import { useEffect, useState } from 'react';
+
 const { View, Image, Text, ScrollView } = require('react-native');
 const { textBlk, textGry } = require('./baseStyleSheet');
-const { scale } = require('../utilityFunctions/utilityFunctions');
+const { scale, getUserData, convertFirestoreTimestamp } = require('../utilityFunctions/utilityFunctions');
 
 const Post = ({data={}, }) => {
-  console.log('data --- >', data)
 
   // {"createdAt": {"nanoseconds": 689000000, "seconds": 1731773544}, "email": "bbb@gmail.com", "id": "xlZEylkimzFvIZ24v0pX", "postDesc": "tex", "postImage": ["https://res.cloudinary.com/daznasbt0/image/upload/v1731773543/vjotjbdry9ermsgfi6h6.jpg"], "userName": "Indrashekar"}
-  
-  const profileImage = require('../assets/icons/userProfileIcon.png')
-  const userNAme = data?.userName || '';
-  const creationDate = '2023-11-11 13:00'
+  const postUSerEmail = data?.email;
+  const [postUserData, setpostUserData] = useState(null)
+
+  const fetchData = async()=>{
+    if(postUSerEmail){
+      console.log('fetch post user', postUSerEmail)
+      getUserData(postUSerEmail,(data)=>{
+        setpostUserData(data)
+      })
+    }
+  }
+  useEffect(()=>{
+    fetchData()
+  },[data])
+
+  console.log('data mmmm', data)
+  const profileImage = postUserData?.avatarUrl
+  const userNAme = postUserData?.userName || '';
+  const creationDate = convertFirestoreTimestamp(data?.createdAt) || ''
   const postDescription = data?.postDesc || ''
   const postImages = data?.postImage
 
   return (
     <View style={{ paddingTop: scale(16), marginTop: scale(16), backgroundColor: '#fff', paddingHorizontal: scale(16) }} >
       <View style={{ flexDirection: 'row' }} >
-        <Image source={profileImage} style={{ height: scale(40), width: scale(40) }} />
+        <Image source={{uri : profileImage}} style={{ height: scale(40), width: scale(40) }} />
         <View style={{ paddingStart: scale(8) }} >
           <Text style={textBlk(16, 600)} >{userNAme}</Text>
           <Text style={textGry(12, 400)} >{creationDate}</Text>
