@@ -3,9 +3,9 @@ import React, { createContext, useState, useContext } from 'react';
 // Create the context
 export const AuthContext = createContext();
 
-// Create a provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser1] = useState(null);
+  const [userData, setUserData1] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Add your authentication functions
@@ -36,19 +36,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateUser = (userData) => {
-    setUser(current => ({ ...current, ...userData }));
+  const setUser = (userData) => {
+    setUser1(userData);
+  };
+
+  const setUserData = (userData) => {
+    setUserData1(userData);
+  }
+
+  const initialState = {
+    user,
+    isLoading,
+    login,
+    logout,
+
+    setUser,
+    setUserData,
   };
 
   return (
-    <AuthContext.Provider 
-      value={{
-        user,
-        isLoading,
-        login,
-        logout,
-        updateUser,
-      }}
+    <AuthContext.Provider
+      value={
+        initialState
+      }
     >
       {children}
     </AuthContext.Provider>

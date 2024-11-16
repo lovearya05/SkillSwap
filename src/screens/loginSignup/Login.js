@@ -5,23 +5,21 @@ import baseStyles, { textBlk, textwhite } from '../../components/baseStyleSheet'
 import InputView from './InputView'
 import GreenButton from '../../components/GreenButton'
 import GoogleIcon from '../../assets/icons/GoogleIcon'
-// import { useSelector, useDispatch } from 'react-redux';
-// // import { increment, setUser, setUserData } from '../../redux/slicer'
-// // import { handleGoogleSignup } from './utilityFunctions'
-// import auth from '@react-native-firebase/auth';
-// import firestore from '@react-native-firebase/firestore';
-// import { handleFirebaseError, isEmailValid, saveDataToLocalStorage, scale, showToast } from '../../utilityFunctions/utilityFunctions'
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { handleFirebaseError, isEmailValid, saveDataToLocalStorage, scale, showToast } from '../../utilityFunctions/utilityFunctions'
 import { useNavigation } from '@react-navigation/native'
 import CodeMintText from '../../assets/icons/CodeMintText'
+import { useAuth } from '../../context/AuthContext'
 
 const Login = ({ setShowLoginPage = () => { }, }) => {
     const [inputEmail, setInputEmail] = useState('')
     const [inputPassword, setInputPassword] = useState('')
-    // const dispatch = useDispatch()
-    const dispatch = ()=>{}
     const [isLoading, setIsLoading] = useState(false)
     const [isResetMailSend, setIsResetMailSend] = useState(false)
     const navigation = useNavigation()
+
+    const { setUserData, setUser } = useAuth();
 
     const handleForgotPassword = () => {
         // if (!isEmailValid(inputEmail)) {
@@ -37,33 +35,35 @@ const Login = ({ setShowLoginPage = () => { }, }) => {
 //     const value = useSelector(state => state?.appData)
 
     const handleLogin = async () => {
-        // if (!isEmailValid(inputEmail)) {
-        //     showToast('Please enter valid email')
-        // } else if (inputPassword.length < 6) {
-        //     showToast('Please enter valid password')
-        // } else {
-        //     setIsLoading(true)
-        //     auth().signInWithEmailAndPassword(inputEmail, inputPassword).then((user) => {
-        //         console.log('user: ', user)
-        //         if (user?.user) {
-        //             firestore().collection('users').doc(inputEmail).get().then((userDataTemp) => {
-        //                 const userDataTemp1 = userDataTemp.data();
-        //                 saveDataToLocalStorage('user', user?.user)
-        //                 saveDataToLocalStorage('userData', userDataTemp1)
-        //                 // dispatch(setUserData(userDataTemp1 ? JSON.parse(JSON.stringify(userDataTemp1)) : null))
-        //                 // dispatch(setUser(JSON.parse(JSON.stringify(user?.user))))
-        //                 navigation.navigate('HandlePageToRender')
-        //                 setIsLoading(false)
-        //             })
-        //         }
-        //     }).catch((e) => {
-        //         setIsLoading(false)
-        //         handleFirebaseError(e)
-        //         console.log(e)
-        //         setIsLoading(false)
-        //         // showToast('try again later')
-        //     })
-        // }
+        if (!isEmailValid(inputEmail)) {
+            showToast('Please enter valid email')
+        } else if (inputPassword.length < 6) {
+            showToast('Please enter valid password')
+        } else {
+            setIsLoading(true)
+            auth().signInWithEmailAndPassword(inputEmail, inputPassword).then((user) => {
+                console.log('user: ', user)
+                if (user?.user) {
+                    firestore().collection('users').doc(inputEmail).get().then((userDataTemp) => {
+                        const userDataTemp1 = userDataTemp.data();
+                        saveDataToLocalStorage('user', user?.user)
+                        saveDataToLocalStorage('userData', userDataTemp1)
+
+                        setUserData(userDataTemp1 ? JSON.parse(JSON.stringify(userDataTemp1)) : null)
+                        setUser(JSON.parse(JSON.stringify(user?.user)))
+
+                        // navigation.navigate('HandlePageToRender')
+                        setIsLoading(false)
+                    })
+                }
+            }).catch((e) => {
+                setIsLoading(false)
+                handleFirebaseError(e)
+                console.log(e)
+                setIsLoading(false)
+                // showToast('try again later')
+            })
+        }
     }
     // return null
 
