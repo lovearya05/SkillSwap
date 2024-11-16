@@ -16,7 +16,7 @@ import EmptyScreen from '../screens/Home/EmptyScreen';
 //       }}
 //       initialRouteName='HandlePageToRender'
 //       >
-//         <Stack.Screen name='EmptyScreen' component={EmptyScreen} options={{}} />
+//         <Stack.Screen name='EmsptyScreen' component={EmptyScreen} options={{}} />
   
 //       </Stack.Navigator>
 //     )
