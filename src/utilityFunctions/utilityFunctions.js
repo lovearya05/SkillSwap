@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // // import { setUser, setUserData } from '../redux/slicer';
 import { Alert, Dimensions, Linking, PermissionsAndroid } from 'react-native';
 const { height, width } = Dimensions.get('window')
+import firestore from '@react-native-firebase/firestore';
+
 
 
 export const showToast = (text = '') => {
@@ -153,18 +155,18 @@ export const getDataFromLocalStorage = async (key = '') => {
 // export const updatedAt = () => firestore.FieldValue.serverTimestamp()
 
 // export const updateData = (inputEmail = '', dispatch = () => { }, nextFunction = () => { }, failFunction = () => { }) => {
-//   // if (!inputEmail) return
-//   // try {
-//   //   firestore().collection('users').doc(inputEmail).get().then((userDataTemp) => {
-//   //     const userDataTemp1 = userDataTemp.data();
-//   //     dispatch(setUserData(JSON.parse(JSON.stringify(userDataTemp1))))
-//   //     saveDataToLocalStorage('userData', userDataTemp1)
-//   //     nextFunction()
-//   //   })
-//   // } catch (e) {
-//   //   failFunction()
-//   //   handleFirebaseError(e)
-//   // }
+//   if (!inputEmail) return
+//   try {
+//     firestore().collection('users').doc(inputEmail).get().then((userDataTemp) => {
+//       const userDataTemp1 = userDataTemp.data();
+//       dispatch(setUserData(JSON.parse(JSON.stringify(userDataTemp1))))
+//       saveDataToLocalStorage('userData', userDataTemp1)
+//       nextFunction()
+//     })
+//   } catch (e) {
+//     failFunction()
+//     handleFirebaseError(e)
+//   }
 // }
 
 // export const debounceHandler = (nextFunction = () => { }, time = 0) => {
@@ -228,3 +230,20 @@ export const scale = (units = 0) => {
 
 // }
 
+export const handleUpdateUser = (userEmail='', userDate={}) => {
+    try {
+      firestore().collection('users').doc('email').set(userDate).then(()=>{
+        firestore().collection('users').doc(email).get().then((userDataTemp)=>{
+          const userDataTemp1 = userDataTemp.data();
+          console.log('userData------------------->', userDataTemp1)
+          setUserData(JSON.parse(JSON.stringify(userDataTemp1)))
+        })
+        showToast('Successfully updated')
+      })
+    } catch (error) {
+      showToast('try again')
+      console.log(error)
+    }
+  // }
+  // setDisableButton(false)
+}
