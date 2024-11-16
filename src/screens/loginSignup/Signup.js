@@ -8,11 +8,8 @@ import GreenButton from '../../components/GreenButton'
 import OTPPage from './OTPPage'
 import auth from '@react-native-firebase/auth';
 import { handleGoogleSignup } from './utilityFunctions'
-// import { useDispatch, useSelector, } from 'react-redux';
 import { createNewDocument, generateRandom4DigitNumber, isEmailValid, saveDataToLocalStorage, scale, showToast, userExistsOrNot } from '../../utilityFunctions/utilityFunctions'
-// import { setUser } from '../../redux/slicer'
-import { useFocusEffect } from '@react-navigation/native'
-
+import { useAuth } from '../../context/AuthContext'
 
 const Signup = ({ setShowLoginPage, }) => {
     const vh = Dimensions.get('window').height
@@ -24,7 +21,7 @@ const Signup = ({ setShowLoginPage, }) => {
     const [OTP, setOTP] = useState('')
 
 
-    const handleSendOtp = async () => {
+    const handleSendOtp = async () => { // create Account
         try {
             if (!isEmailValid(inputEmail)) {
                 showToast('Please enter valid email')
@@ -73,6 +70,7 @@ const Signup = ({ setShowLoginPage, }) => {
     const handleGoogleSignupBtn = () => handleGoogleSignup(dispatch)
 
     const handleShowLoginPage = () => setShowLoginPage(true)
+    const { setUserData, setUser } = useAuth();
 
     const signupUser = () => {
         console.log('signup', inputEmail, inputPassword)
@@ -83,7 +81,7 @@ const Signup = ({ setShowLoginPage, }) => {
                     console.log('userCredential---->', userCredential?.user)
                     if (userCredential?.user) {
                         saveDataToLocalStorage('user', userCredential?.user)
-                        // dispatch(setUser(JSON.parse(JSON.stringify(userCredential?.user))))
+                        setUser(JSON.parse(JSON.stringify(userCredential?.user)))
                     }
                 })
                 .catch(error => {
