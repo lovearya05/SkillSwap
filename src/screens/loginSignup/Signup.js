@@ -157,9 +157,9 @@ const Signup = ({ setShowLoginPage, }) => {
                             </View>
 
                             <View style={{ marginTop: '15%' }} >
-                                <InputView inputTitle='Name' placeholderText='Enter your name' value={name} setValue={setName} />
-                                <InputView inputTitle='Email' placeholderText='abc@gmail.com' value={inputEmail} setValue={setInputEmail} />
-                                <InputView inputTitle='Password' placeholderText='******' value={inputPassword} setValue={setInputPassword} isPassword />
+                                <InputView inputTitle='Username' placeholderText='Enter your name' value={name} setValue={setName} />
+                                <InputView inputTitle='Email Address' placeholderText='Enter your email' value={inputEmail} setValue={setInputEmail} />
+                                <InputView inputTitle='Password' placeholderText='Enter your password' value={inputPassword} setValue={setInputPassword} isPassword />
                             </View>
 
 
@@ -168,7 +168,7 @@ const Signup = ({ setShowLoginPage, }) => {
                             <View style={{ marginTop: 16 }} >
                                 <Text style={{ textAlign: 'center' }} onPress={handleShowLoginPage} >
                                     <Text style={[textwhite(16, 400)]} >Already a user? </Text>
-                                    <Text style={[textwhite(16, 400), { color: 'rgba(5, 167, 122, 1)' }]} >Login here</Text>
+                                    <Text style={[textwhite(14, 800), { color: 'rgba(0, 122, 255, 1)' }]} >Then Login!</Text>
                                 </Text>
 
                             </View>
@@ -180,7 +180,7 @@ const Signup = ({ setShowLoginPage, }) => {
                 <View style={{ bottom: 20, width: '100%' }} >
                     <Text style={{ textAlign: 'center' }} >
                         <Text style={[textwhite(12, 400), { color: 'rgba(169, 163, 163, 1)' }]} >By signing up, you agree to our </Text>
-                        <Text style={[textwhite(12, 400), { color: 'rgba(0, 149, 95, 1)' }]} >Terms & Privacy policy</Text>
+                        <Text style={[textwhite(12, 400), { color: 'rgba(0, 122, 255, 1)' }]} >Terms & Privacy policy</Text>
                     </Text>
                 </View>
             </View>
@@ -192,8 +192,8 @@ export default Signup
 
 const styles = StyleSheet.create({
     logoImage: {
-        height: scale(25),
-        width: scale(25),
+        height: scale(40),
+        width: scale(40),
         marginRight: scale(4)
     },
     loginSignupTextView: {

@@ -10,7 +10,7 @@ const baseStyles = StyleSheet.create({
     textGreenFs23Fw700: {
         fontSize: scale(23),
         fontWeight: 700,
-        color: '#00955F'
+        color: '#3080f8'
     },
     textBlkFs14Fw300: {
         fontSize: scale(14),
