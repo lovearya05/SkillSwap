@@ -6,6 +6,7 @@ import { handleUpdateUser, requestStoragePermission, scale } from '../../utility
 import AddSkillModal from './EditProfileModal'
 import { useAuth } from '../../context/AuthContext'
 import * as ImagePicker from 'react-native-image-picker';
+import HorizontalLine from '../../components/HorizontalLine'
 
 const ProfileScreen = () => {
   const [addSkillType, setAddSkillType] = useState('');
@@ -286,12 +287,15 @@ const ProfileScreen = () => {
 
       <AddSkillModal addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
 
+      <HorizontalLine/>
       {userProfileDetails()}
       {/* <HorizontalLine/> */}
       {skillsSection()}
       {/* <HorizontalLine/> */}
       {skillsOfInterest()}
+      <HorizontalLine/>
       {suggestedProfiles()}
+      <HorizontalLine/>
       {renderPosts()}
       <View>
 
