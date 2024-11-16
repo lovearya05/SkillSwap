@@ -115,12 +115,12 @@ const Login = ({ setShowLoginPage = () => { }, }) => {
                             )}
                         </View>
 
-                        <GreenButton text="Log In" onPress={handleLogin} isDisabled={isLoading} />
+                        <GreenButton text="LOGIN" onPress={handleLogin} isDisabled={isLoading} />
 
                         <View style={{ marginTop: 16 }}>
                             <Text style={{ textAlign: 'center' }} onPress={handleShowSignUpPage}>
                                 <Text style={[textwhite(16, 400)]}>Don't have an account? </Text>
-                                <Text style={[styles.signupLink]}>Sign up here</Text>
+                                <Text style={[styles.signupLink]}>Sign up</Text>
                             </Text>
                         </View>
                     </View>
@@ -161,15 +161,17 @@ const styles = StyleSheet.create({
         color: '#A9A9A9',
     },
     forgotPasswordText: {
-        fontSize: 14,
-        fontWeight: '500',
-        color: 'rgba(0, 122, 255, 1)', // Matches the blue in the design
+        fontSize: 16,
+        fontWeight: '800',
+        //color: 'rgba(0, 122, 255, 1)', // Matches the blue in the design
+        color: 'white',
         textAlign: 'right',
         marginVertical: 8,
     },
     signupLink: {
         color: 'rgba(0, 122, 255, 1)', // Matches the blue color in the design
-        fontWeight: '600',
+        fontWeight: '800',
+        fontSize: 18
     },
     termsText: {
         fontSize: 14,
