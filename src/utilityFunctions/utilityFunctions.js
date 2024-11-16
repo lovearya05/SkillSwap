@@ -76,46 +76,46 @@ export const createNewDocument = (collectionName = '', dataToCreate = {}, nextFu
 //   }
 
 // }
-// export const handleFirebaseError = (err) => {
-//   switch (err.code) {
-//     case 'auth/invalid-email':
-//       showToast('That email address is invalid!')
-//       break;
-//     case 'auth/invalid-credential':
-//       showToast('That password is invalid!')
-//       break;
-//     case 'auth/too-many-requests':
-//       showToast('Too many attempts to login try again later')
-//       break;
-//     case 'auth/email-already-exists':
-//       showToast('already a use')
-//       break;
-//     case 'auth/invalid-argument':
-//       showToast('An invalid argument was provided to an Authentication method')
-//       break;
-//     case 'auth/invalid-credential':
-//       showToast('An invalid credential was provided to an Authentication method')
-//       break;
-//     case 'auth/invalid-email':
-//       showToast('The provided value for the email user property is invalid')
-//       break;
-//     case 'auth/invalid-password':
-//       showToast(' The provided value for the password is invalid')
-//       break;
-//     case 'auth/too-many-requests':
-//       showToast('Too many attempts')
-//       break;
-//     case 'auth/uid-already-exists':
-//       showToast('The provided uid is already in use by an existing user')
-//       break;
-//     case 'auth/user-not-found':
-//       showToast('user not found')
-//       break;
-//     default:
-//       showToast('Something went wrong')
-//       break;
-//   }
-// }
+export const handleFirebaseError = (err) => {
+  switch (err.code) {
+    case 'auth/invalid-email':
+      showToast('That email address is invalid!')
+      break;
+    case 'auth/invalid-credential':
+      showToast('That password is invalid!')
+      break;
+    case 'auth/too-many-requests':
+      showToast('Too many attempts to login try again later')
+      break;
+    case 'auth/email-already-exists':
+      showToast('already a use')
+      break;
+    case 'auth/invalid-argument':
+      showToast('An invalid argument was provided to an Authentication method')
+      break;
+    case 'auth/invalid-credential':
+      showToast('An invalid credential was provided to an Authentication method')
+      break;
+    case 'auth/invalid-email':
+      showToast('The provided value for the email user property is invalid')
+      break;
+    case 'auth/invalid-password':
+      showToast(' The provided value for the password is invalid')
+      break;
+    case 'auth/too-many-requests':
+      showToast('Too many attempts')
+      break;
+    case 'auth/uid-already-exists':
+      showToast('The provided uid is already in use by an existing user')
+      break;
+    case 'auth/user-not-found':
+      showToast('user not found')
+      break;
+    default:
+      showToast('Something went wrong')
+      break;
+  }
+}
 export const saveDataToLocalStorage = async (key = '', data = {}) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(data));
@@ -150,8 +150,8 @@ export const getDataFromLocalStorage = async (key = '') => {
 //     }
 //   })
 // }
-// export const createdAt = () => firestore.FieldValue.serverTimestamp()
-// export const updatedAt = () => firestore.FieldValue.serverTimestamp()
+export const createdAt = () => firestore.FieldValue.serverTimestamp()
+export const updatedAt = () => firestore.FieldValue.serverTimestamp()
 
 // export const updateData = (inputEmail = '', dispatch = () => { }, nextFunction = () => { }, failFunction = () => { }) => {
 //   if (!inputEmail) return
@@ -193,41 +193,6 @@ export const scale = (units = 0) => {
 // }
 
 
-// export const requestStoragePermission = async () => {
-
-//   return new Promise( async (resolve, reject) => {
-//     try {
-//       const granted = await PermissionsAndroid.requestMultiple([
-//         PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-//       ],
-//         {
-//           title: 'Storage Permission',
-//           message: 'App needs access to your storage to read files.',
-//           buttonPositive: 'OK',
-//         },
-//       );
-
-//       if (granted['android.permission.READ_MEDIA_IMAGES'] === PermissionsAndroid.RESULTS.GRANTED) {
-//         // console.log('Permission granted, you can access images now.');
-//         resolve(true)
-//       } else {
-//         // console.log('Permission denied, cannot access images.');
-//         Alert.alert(
-//           'Storage Permission Denied',
-//           'Please enable storage permission in the app settings.',
-//           [{ text: 'Go to Settings', onPress: () => Linking.openSettings() }]
-//         );
-//         resolve(false)
-//       }
-
-//     } catch (err) {
-//       resolve(false)
-//       console.warn(err);
-//     };
-//   });
-
-
-// }
 
 export const handleUpdateUser = (userEmail='', userDate={}, nextFunction=()=>{}) => {
     try {
