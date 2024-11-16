@@ -2,26 +2,117 @@ import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react
 import React, { useState } from 'react'
 import { } from 'react-native-svg'
 import { textBlk, textGry } from '../../components/baseStyleSheet'
-import { handleUpdateUser, scale } from '../../utilityFunctions/utilityFunctions'
+import { handleUpdateUser, requestStoragePermission, scale } from '../../utilityFunctions/utilityFunctions'
 import AddSkillModal from './EditProfileModal'
 import { useAuth } from '../../context/AuthContext'
+import * as ImagePicker from 'react-native-image-picker';
 
 const ProfileScreen = () => {
   const [addSkillType, setAddSkillType] = useState('');
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
-  const { user, userData, logout, login } = useAuth();
+  const { user, userData, logout, login, updateUserData } = useAuth();
+
+  const handleAddSkill = (imageUrl='') => {
+    if(userData.email){
+      const updatedData = {...userData, avatarUrl: imageUrl}
+      handleUpdateUser(userData.email,  updatedData, ()=>  updateUserData());
+    }
+  };
+
+  const pickImage = async () => {
+    const response = await requestStoragePermission();
+    if(!response) return;
+    const options = {
+      mediaType: 'photo',
+      quality: 1,
+      selectionLimit: 1,
+      multiple: false,
+    };
+    try {
+
+      ImagePicker.launchImageLibrary(options, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          const source = { uri: response?.assets[0] };
+          const source1 = { uri: response?.assets[1] };
+          const source2 = { uri: response?.assets[2] };
+
+          const images = [];
+          if (source?.uri) images.push(source);
+          if (source1?.uri) images.push(source1);
+          if (source2?.uri) images.push(source2);
+
+          console.log('images', images)
+          setImage(images);
+          uploadImages(images)
+        }
+      });
+
+    } catch (error) {
+      setImage([])
+      console.log('image pic error', error)
+    }
+
+  };
+
+  const YOUR_CLOUD_NAME = 'daznasbt0';
+  const YOUR_UPLOAD_PRESET = 'skillSwap';
+
+  const uploadImages = async (images) => {
+
+    if (images.length === 0) return;
+    setUploading(true);
+    const uploadedUrls = [];
+
+    try {
+      for (const img1 of images) {
+        const img = img1.uri;
+        const formData = new FormData();
+        formData.append('upload_preset', YOUR_UPLOAD_PRESET);
+        formData.append('file', {
+          uri: uri = img.uri.startsWith('file://') ? img.uri : `file://${img.uri}`,
+          type: img.type || 'image/jpeg',
+          name: img.fileName || `image-${Date.now()}.jpg`,
+          width: img.width,
+          height: img.height,
+        });
+
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${YOUR_CLOUD_NAME}/image/upload`,
+          {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        const data = await response.json();
+        if (data.secure_url) {
+          uploadedUrls.push(data.secure_url);
+        }
+      }
+      uploadedUrls[0] && handleAddSkill(uploadedUrls[0])
+      console.log('All images uploaded successfully:', uploadedUrls);
+
+      alert(`Successfully uploaded ${uploadedUrls.length} images`);
+
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      alert('Failed to upload some images');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleEditProfileName = ()=>{
     handleUpdateUser()
-  }
-  const handleEditProfilePic = ()=>{
-
-  }
-  const handleEditSkills = ()=>{
-
-  }
-  const handleEditInterestedSkills = ()=>{
-
   }
 
   const editIcon = (type='') => {
@@ -31,7 +122,7 @@ const ProfileScreen = () => {
         if(type === 'name'){
           handleEditProfileName
         }else if(type === 'pic'){
-          handleEditProfilePic()
+          pickImage()
         }else if(type === 'skills'){
           setAddSkillType('skills')
         }else if(type === 'interestedSkills'){
@@ -46,14 +137,14 @@ const ProfileScreen = () => {
     const userName = userData?.userName || ''
     const userEmail =  userData?.email || ''
     const userBio = userData?.bio || ''
-    const profileImage = userData?.avatarUrl || require('../../assets/icons/userProfileIcon.png')
+    const profileImage = {uri : userData?.avatarUrl} || require('../../assets/icons/userProfileIcon.png')
     return (
       <View style={{ paddingVertical: scale(40), paddingHorizontal: scale(16) }} >
         <View style={{ flexDirection: 'row' }} >
           <View style={{}} >
             <Image source={profileImage} style={{ height: scale(100), width: scale(100), borderRadius: scale(200) }} />
             <View style={{position: 'absolute', bottom: 0, left: scale(30), bottom: scale(5)}} >
-            {editIcon()}
+            {editIcon('pic')}
             </View>
           </View>
           <View style={{ paddingHorizontal: scale(20) }} >

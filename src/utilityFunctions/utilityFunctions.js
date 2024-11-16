@@ -247,3 +247,40 @@ export const handleUpdateUser = (userEmail='', userDate={}, nextFunction=()=>{})
   // }
   // setDisableButton(false)
 }
+
+
+export const requestStoragePermission = async () => {
+
+  return new Promise( async (resolve, reject) => {
+    try {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+      ],
+        {
+          title: 'Storage Permission',
+          message: 'App needs access to your storage to read files.',
+          buttonPositive: 'OK',
+        },
+      );
+
+      if (granted['android.permission.READ_MEDIA_IMAGES'] === PermissionsAndroid.RESULTS.GRANTED) {
+        // console.log('Permission granted, you can access images now.');
+        resolve(true)
+      } else {
+        // console.log('Permission denied, cannot access images.');
+        Alert.alert(
+          'Storage Permission Denied',
+          'Please enable storage permission in the app settings.',
+          [{ text: 'Go to Settings', onPress: () => Linking.openSettings() }]
+        );
+        resolve(false)
+      }
+
+    } catch (err) {
+      resolve(false)
+      console.warn(err);
+    };
+  });
+
+
+}
