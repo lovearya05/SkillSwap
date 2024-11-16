@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert, Dimensions, Linking, PermissionsAndroid } from 'react-native';
 const { height, width } = Dimensions.get('window')
 
+
 export const showToast = (text = '') => {
   Toast.show(text);
 }
@@ -31,18 +32,18 @@ export const isEmailValid = (email) => {
 
 }
 
-// export const createNewDocument = (collectionName = '', dataToCreate = {}, nextFunction = () => { }, errorMessage = '', errorFunction = () => { }) => {
-//   try {
-//     firestore().collection(collectionName).add(dataToCreate).then((data) => {
-//       console.log('data created successfully', data)
-//     })
-//     nextFunction()
-//   } catch (e) {
-//     showToast(errorMessage)
-//     errorFunction()
-//     console.log(e)
-//   }
-// }
+export const createNewDocument = (collectionName = '', dataToCreate = {}, nextFunction = () => { }, errorMessage = '', errorFunction = () => { }) => {
+  try {
+    firestore().collection(collectionName).add(dataToCreate).then((data) => {
+      console.log('data created successfully', data)
+    })
+    nextFunction()
+  } catch (e) {
+    showToast(errorMessage)
+    errorFunction()
+    console.log(e)
+  }
+}
 // export const userExistsOrNot = async (emailId) => {
 //   return new Promise((resolve, reject) => {
 //     try {
@@ -133,17 +134,7 @@ export const getDataFromLocalStorage = async (key = '') => {
     }
   })
 }
-// export const uploadOrUpdateAcessmentQuestion = (questionsData) => {
-//   consoleMessage('utility Functions', 'upload questions to firebase', questionsData)
-//   try {
-//     firestore().collection('questions').doc('assessmentQuestions').set({ questionsArray: questionsData }).then((resp) => {
-//       console.log('uploaded successfull -->', resp)
-//     })
-//   } catch (e) {
-//     console.log(e)
-//     handleFirebaseError(e)
-//   }
-// }
+
 // export const getAssessmentQuestions = () => {
 //   return new Promise(async (resolve, reject) => {
 //     try {
@@ -236,3 +227,4 @@ export const scale = (units = 0) => {
 
 
 // }
+
