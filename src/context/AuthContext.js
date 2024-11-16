@@ -1,4 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
+import firestore from '@react-native-firebase/firestore';
+import { saveDataToLocalStorage } from '../utilityFunctions/utilityFunctions';
 
 // Create the context
 export const AuthContext = createContext();
@@ -44,12 +46,24 @@ export const AuthProvider = ({ children }) => {
     setUserData1(userData);
   }
 
+  const updateUserData = () => {
+    firestore().collection('users').doc(user?.email).get().then((userDataTemp) => {
+      const userDataTemp1 = userDataTemp.data();
+      if (userDataTemp1) {
+        saveDataToLocalStorage('userData', userDataTemp1)
+        setUserData(userDataTemp1 ? JSON.parse(JSON.stringify(userDataTemp1)) : null)
+      }
+    })
+  }
+
   const initialState = {
     user,
+    userData,
     isLoading,
     login,
     logout,
-
+    updateUserData,
+    
     setUser,
     setUserData,
   };

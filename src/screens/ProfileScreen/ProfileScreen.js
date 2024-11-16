@@ -1,22 +1,66 @@
-import { View, Text, Image, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
 import { } from 'react-native-svg'
 import { textBlk, textGry } from '../../components/baseStyleSheet'
-import { scale } from '../../utilityFunctions/utilityFunctions'
+import { handleUpdateUser, scale } from '../../utilityFunctions/utilityFunctions'
+import AddSkillModal from './EditProfileModal'
+import { useAuth } from '../../context/AuthContext'
 
 const ProfileScreen = () => {
+  const [addSkillType, setAddSkillType] = useState('');
 
+  const { user, userData, logout, login } = useAuth();
+
+  const handleEditProfileName = ()=>{
+    handleUpdateUser()
+  }
+  const handleEditProfilePic = ()=>{
+
+  }
+  const handleEditSkills = ()=>{
+
+  }
+  const handleEditInterestedSkills = ()=>{
+
+  }
+
+  const editIcon = (type='') => {
+    
+    return (
+      <TouchableOpacity onPress={()=>{
+        if(type === 'name'){
+          handleEditProfileName
+        }else if(type === 'pic'){
+          handleEditProfilePic()
+        }else if(type === 'skills'){
+          setAddSkillType('skills')
+        }else if(type === 'interestedSkills'){
+          setAddSkillType('interestedSkills')
+        }
+      }} style={{ marginLeft: scale(10) }} >
+        <Image style={{ height: scale(20), width: scale(20) }} source={require('../../assets/icons/editIcon.png')} />
+      </TouchableOpacity>
+    )
+  }
   const userProfileDetails = () => {
-    const userName = 'LovePreet'
-    const userEmail = 'lovepreet@gmail.com'
-    const userBio = 'A passionate software developer with a love for creating innovative solutions. Experienced in full-stack development and always eager to leam new technologies.'
-    const profileImage = require('../../assets/icons/userProfileIcon.png')
+    const userName = userData?.userName || ''
+    const userEmail =  userData?.email || ''
+    const userBio = userData?.bio || ''
+    const profileImage = userData?.avatarUrl || require('../../assets/icons/userProfileIcon.png')
     return (
       <View style={{ paddingVertical: scale(40), paddingHorizontal: scale(16) }} >
         <View style={{ flexDirection: 'row' }} >
-          <Image source={profileImage} style={{ height: scale(100), width: scale(100) }} />
+          <View style={{}} >
+            <Image source={profileImage} style={{ height: scale(100), width: scale(100), borderRadius: scale(200) }} />
+            <View style={{position: 'absolute', bottom: 0, left: scale(30), bottom: scale(5)}} >
+            {editIcon()}
+            </View>
+          </View>
           <View style={{ paddingHorizontal: scale(20) }} >
-            <Text style={textBlk(16, 800)} >{userName}</Text>
+            <View style={{ flexDirection: 'row', }} >
+              <Text style={textBlk(16, 800)} >{userName}</Text>
+              {editIcon()}
+            </View>
             <Text style={textGry(14, 500)} >{userEmail}</Text>
           </View>
         </View>
@@ -26,11 +70,14 @@ const ProfileScreen = () => {
     )
   }
   const skillsSection = () => {
-    const userSkills = ['Design', 'Development', 'Coding']
+    const userSkills = userData?.skills || []
 
     return (
       <View style={{ paddingHorizontal: scale(16) }} >
-        <Text style={textBlk(20, 600)}>Skills</Text>
+        <View style={{ flexDirection: 'row', }} >
+          <Text style={textBlk(20, 600)}>Skills</Text>
+          {editIcon('skills')}
+        </View>
 
         <View style={{ flexDirection: 'row', paddingVertical: scale(10) }} >
           {userSkills.map((item, i) => {
@@ -45,10 +92,13 @@ const ProfileScreen = () => {
     )
   }
   const skillsOfInterest = () => {
-    const userSkills = ['Design', 'Development', 'Coding']
+    const userSkills = userData?.skillToLearn || []
     return (
       <View style={{ paddingHorizontal: scale(16), paddingVertical: scale(8) }} >
-        <Text style={textBlk(20, 600)}>Skills of Interest</Text>
+        <View style={{ flexDirection: 'row', }} >
+          <Text style={textBlk(20, 600)}>Skills of Interest</Text>
+          {editIcon('interestedSkills')}
+        </View>
 
         <View style={{ flexDirection: 'row', paddingVertical: scale(10) }} >
           {userSkills.map((item, i) => {
@@ -70,35 +120,92 @@ const ProfileScreen = () => {
 
     return (
       <ScrollView >
+        <FlatList
+          data={[1, 2, 3, 4]}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => {
+            return (
+              <View style={{ paddingHorizontal: scale(12), marginLeft: scale(16), paddingVertical: scale(10), borderRadius: scale(8), backgroundColor: '#fff', width: scale(140) }} >
+                <Image source={profileImage} style={{ height: scale(100), width: scale(100) }} />
+                <View>
+                  <Text style={textBlk(14, 500)} >{profileName}</Text>
+                  <View style={{ flexDirection: 'row', overflow: 'hidden' }} >
+                    {skills.map((item, i) => {
+                      return (
+                        <Text numberOfLines={1} key={i} style={[textGry(14, 400), { marginRight: scale(8), }]} >{item}</Text>
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+            )
+          }}
+        />
 
-        <View style={{paddingLeft: scale(16)}} >
-          <Image source={profileImage} style={{ height: scale(100), width: scale(100) }} />
-          <View>
-            <Text style={textBlk(14,500)} >{profileName}</Text>
-            <View style={{ flexDirection: 'row' }} > 
-              {skills.map((item, i)=>{
-                return(
-                  <Text key={i} style={[textGry(14,400), { marginRight: scale(8)}]} >{item}</Text>
-                )
-              })}
-            </View>
-          </View>
-        </View>
-        
       </ScrollView>
     )
   }
 
+  const renderPosts = () => {
+    return (
+      <View style={{ paddingVertical: scale(16), }} >
+        <Text style={[textBlk(20, 600), { paddingHorizontal: scale(16), }]}>Posts</Text>
+        {post()}
+      </View>
+    )
+  }
+  const post = () => {
+    const profileImage = require('../../assets/icons/userProfileIcon.png')
+    const userNAme = 'Jane Smith';
+    const creationDate = '2023-11-11 13:00'
+    const postDescription = 'Had a great time at the tech conference today. Learned a lot and met some amazing people!'
+    const postImage = require('../../assets/postTempImg.png')
+
+    return (
+      <View style={{ paddingTop: scale(16), marginTop: scale(16), backgroundColor: '#fff', paddingHorizontal: scale(16) }} >
+        <View style={{ flexDirection: 'row' }} >
+          <Image source={profileImage} style={{ height: scale(40), width: scale(40) }} />
+          <View style={{ paddingStart: scale(8) }} >
+            <Text style={textBlk(16, 600)} >{userNAme}</Text>
+            <Text style={textGry(12, 400)} >{creationDate}</Text>
+          </View>
+        </View>
+
+        <View style={{ paddingVertical: scale(12) }} >
+          <Text style={textBlk(14, 400)} >{postDescription}</Text>
+        </View>
+
+        <View style={{ paddingBottom: scale(16) }} >
+          <Image source={postImage} style={{ height: scale(280), width: scale(344), }} resizeMode={'cover'} />
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: scale(12) }} >
+          <Image style={{ height: scale(30), width: scale(30) }} source={require('../../assets/icons/Like_Icon.png')} />
+          <Image style={{ height: scale(30), width: scale(30) }} source={require('../../assets/icons/Comment_Icon.png')} />
+          <Image style={{ height: scale(30), width: scale(30) }} source={require('../../assets/icons/Share_Icon.png')} />
+        </View>
+      </View>
+    )
+  }
+
+
   return (
-    <View>
+    <ScrollView>
+
+      <AddSkillModal addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
+
       {userProfileDetails()}
+      {/* <HorizontalLine/> */}
       {skillsSection()}
+      {/* <HorizontalLine/> */}
       {skillsOfInterest()}
       {suggestedProfiles()}
+      {renderPosts()}
       <View>
 
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
