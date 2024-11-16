@@ -1,71 +1,46 @@
-import { View, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
-import React, { Fragment, useEffect, useRef, useState } from 'react'
-import DrawerNavbar from '../navbar/DrawerNavbar'
-import HorizontalLine from '../../components/HorizontalLine'
-import {useNavigation } from '@react-navigation/native'
-import {  scale, } from '../../utilityFunctions/utilityFunctions'
-import firestore from '@react-native-firebase/firestore';
-import LoadingScreen from '../../components/LoadingScreen'
-import RetakeButtonSvg from '../../assets/icons/RetakeButtonSvg'
-
+import { View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native'
+import React, { useState } from 'react'
+import { useAuth } from '../../context/AuthContext';
+import { createNewDocument, scale } from '../../utilityFunctions/utilityFunctions';
+import HorizontalLine from '../../components/HorizontalLine';
+import CreatePostModal from './CreatePostModal';
+import ShowPosts from './ShowPosts';
 
 const HomePage = () => {
-  // const navigation = useNavigation()
-  // const [userAnalytics, setUserAnalytics] = useState()
-  // const [loadingData, setLoadingData] = useState(false)
-  // const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-  // const vh = Dimensions.get('window').height
+  const { user, userData } = useAuth();
+  const profileImage = {uri : userData?.avatarUrl} || require('../../assets/icons/userProfileIcon.png')
+  const [showCreatePost, setShowCreatePost] = useState(false);
 
-  // console.log('userData -=-=-=-=-=-=>', userData?.email)
+  const handleCreatePoste = ()=>{
+   
+  }
 
-  // const handleFetchAnalytics = () => {
-  //   setLoadingData(true)
+  const topHeader = ()=>{
+    return(
+      <View style={{paddingVertical: scale(8), paddingHorizontal: scale(16), flexDirection:'row', paddingVertical: scale(8), backgroundColor: '#fff'}} >
+         <Image source={profileImage} style={{ height: scale(30), width: scale(30), borderRadius: scale(200) }} />
 
-  //   var currentYear = new Date().getFullYear();
-  //   console.log('selectedMonth', selectedMonth)
-  //   var startDate = new Date(currentYear, +selectedMonth-1, 1, 0, 0, 0); // Start of the given month
-  //   var endDate = new Date(currentYear, +selectedMonth, 0, 23, 59, 59); // End of the given month
+         <View style={{borderColor: '#000', borderWidth: scale(1), width: scale(250), borderRadius: scale(4), marginHorizontal: scale(8)}} >
+          {/* search bar  */}
+         </View>
 
-  //   firestore().collection("userAssessments")
-  //     .where("email", "==", userData?.email)
-  //     .where("createdAt", ">=", startDate)
-  //     .where("createdAt", "<=", endDate)
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       let homePoints = 0, transportPoints = 0, shoppingPoints = 0, foodPoints = 0, totalPoints=0;
-  //       querySnapshot.forEach((doc) => {
-  //         const data = doc.data()
-  //         homePoints += data?.homePoints
-  //         transportPoints += data?.transportPoints
-  //         shoppingPoints += data?.shoppingPoints
-  //         foodPoints += data?.foodPoints
-  //         totalPoints += data?.totalPoints
-  //       });
-  //       setLoadingData(false)
-  //       setUserAnalytics({homePoints, transportPoints, shoppingPoints, foodPoints, totalPoints});
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error getting documents: ", error);
-  //     });
-  // }
-
-  if (loadingData) return <LoadingScreen showAsLoadingScreen={false} />
+         <TouchableOpacity onPress={()=> setShowCreatePost(true)} >
+          <Image source={require('../../assets/icons/writeIcon.png')} style={{height: scale(30), width: scale(30)}} />
+         </TouchableOpacity>
+      </View>
+    )
+  }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff', }}>
-      {/* <DrawerNavbar text='Home' /> */}
-      {/* <HorizontalLine /> */}
+    <SafeAreaView>
+      {topHeader()}
+      <HorizontalLine />
+      <CreatePostModal showCreatePost={showCreatePost} setShowCreatePost={setShowCreatePost} />
 
-      {/* <Text onPress={updateQuestions} >clik to upload Questions</Text> */}
+      <ShowPosts />
 
 
-
-      {/* BOTTOM CHAT VIEW  */}
-      {/* <View style={{ position: 'absolute', bottom: 0, zIndex: 1, width: '100%', }} >
-        <ChatPage />
-      </View> */}
-
-    </View>
+    </SafeAreaView>
   )
 }
 
