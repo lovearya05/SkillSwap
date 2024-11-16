@@ -12,7 +12,7 @@ const GreenButton = ({ text = '',  isDisabled = false, onPress = () => { } }) =>
                     alignItems:'center',
                      paddingVertical: 12,
                     alignSelf: 'flex-start', borderRadius: 10,
-                    paddingHorizontal: 16, backgroundColor:isDisabled ? 'rgba(0, 149, 95, 0.4)': 'rgba(0, 149, 95, 1)'
+                    paddingHorizontal: 16, backgroundColor:isDisabled ? 'rgb(76,130,252)': 'rgba(47,112,254,255)'
                 }]} >
                 <Text style={[textwhite(14,500),{opacity:isDisabled?0.4 : 1}]} >{text}</Text>
             </TouchableOpacity>

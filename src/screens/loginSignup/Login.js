@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Dimensions, TouchableOpacity, SafeAreaView, Image, StyleSheet, } from 'react-native'
+import { View, Text, ScrollView, Dimensions, TouchableOpacity, SafeAreaView, Image, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SplashBackground from '../../assets/icons/SplashBackground'
 import baseStyles, { textBlk, textwhite } from '../../components/baseStyleSheet'
@@ -70,72 +70,116 @@ const Login = ({ setShowLoginPage = () => { }, }) => {
 //     // const handleGoogleLoginPress = () => handleGoogleSignup(dispatch)
 
     return (
-            <SplashBackground makeDark>
-                <View style={{ height: '100%', flexDirection:'column', justifyContent:'space-between' }} >
-                    <ScrollView >
-                        <View style={{ marginTop: '14%', paddingHorizontal: 16 }} >
-                            <View style={styles.loginSignupTextView} >
-                                <Image style={styles.logoImage} source={require('../../assets/icons/CarbonMintLogo2.png')} />
-                                <Text>
-                                    <Text style={[textwhite(24, 600)]} >Login to </Text>
-                                    <CodeMintText textColor={1} />
-                                </Text>
-                            </View>
-
-                            <View style={{ marginTop: '10%' }} >
-                                <InputView inputTitle='Email' placeholderText='abc@gmail.com' value={inputEmail} setValue={setInputEmail} />
-                                <InputView inputTitle='Password' placeholderText='******' value={inputPassword} setValue={setInputPassword} isPassword />
-                            </View>
-                            <View>{
-                                isResetMailSend ?
-                                    <Text style={[textwhite(12, 400), { color: 'rgba(248, 94, 0, 1)' }]} >Password reset link sent</Text> :
-                                    <Text onPress={handleForgotPassword} style={[textwhite(12, 400), { color: 'rgba(248, 94, 0, 1)' }]} >I forgot my password.</Text>
-                            }
-                            </View>
-
-                            <GreenButton text='Login' onPress={handleLogin} isDisabled={isLoading} />
-
-                            <View style={{ marginTop: 16 }} >
-                                <Text style={{ textAlign: 'center' }} onPress={handleShowSignUpPage} >
-                                    <Text style={[textwhite(16, 400)]} >Don't have Account? </Text>
-                                    <Text style={[textwhite(16, 400), { color: 'rgba(5, 167, 122, 1)' }]} >Signup here</Text>
-                                </Text>
-
-                                {/* <Text style={[textwhite(12, 400), { textAlign: 'center', marginTop: 30, color: 'rgba(169, 163, 163, 1)' }]} >Or continue with</Text> */}
-                            </View>
-{/* 
-                            <TouchableOpacity onPress={handleGoogleLoginPress} style={[baseStyles.allCntr, baseStyles.flxRowAliCnt, {
-                                marginTop: 10, borderRadius: 10, backgroundColor: 'rgba(229, 229, 229, 1)',
-                                paddingVertical: 6
-                            }]} >
-                                <GoogleIcon />
-                                <Text style={[textBlk(14, 500), { marginLeft: 4 }]} >Sign in with Google</Text>
-                            </TouchableOpacity> */}
-
+        <SplashBackground makeDark>
+            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <ScrollView>
+                    <View style={{ marginTop: '14%', paddingHorizontal: 16 }}>
+                        <View style={styles.loginSignupTextView}>
+                            <Image style={styles.logoImage} source={require('../../assets/icons/CarbonMintLogo2.png')} />
+                            <Text>
+                                <Text style={[textwhite(24, 600)]}>Login to </Text>
+                                <CodeMintText textColor={1} />
+                            </Text>
                         </View>
-                    </ScrollView  >
-                    <View style={{height:60}} />
-                    <View style={{ bottom: 20, width: '100%' }} >
-                        <Text style={{ textAlign: 'center' }} >
-                            <Text style={[textwhite(12, 400), { color: 'rgba(169, 163, 163, 1)' }]} >By signing up, you agree to our </Text>
-                            <Text style={[textwhite(12, 400), { color: 'rgba(0, 149, 95, 1)' }]} >Terms & Privacy policy</Text>
-                        </Text>
+
+                        <View style={{ marginTop: '10%' }}>
+                            {/* Input fields updated */}
+                            <InputView
+                                inputTitle="Email Address"
+                                placeholderText="Enter your email"
+                                value={inputEmail}
+                                setValue={setInputEmail}
+                                titleStyle={styles.inputTitle}
+                                placeholderStyle={styles.placeholderText}
+                            />
+                            <InputView
+                                inputTitle="Password"
+                                placeholderText="Enter your password"
+                                value={inputPassword}
+                                setValue={setInputPassword}
+                                isPassword
+                                titleStyle={styles.inputTitle}
+                                placeholderStyle={styles.placeholderText}
+                            />
+                        </View>
+
+                        <View>
+                            {isResetMailSend ? (
+                                <Text style={[styles.forgotPasswordText, { color: 'rgba(248, 94, 0, 1)' }]}>
+                                    Password reset link sent
+                                </Text>
+                            ) : (
+                                <Text onPress={handleForgotPassword} style={styles.forgotPasswordText}>
+                                    Forgot Password?
+                                </Text>
+                            )}
+                        </View>
+
+                        <GreenButton text="LOGIN" onPress={handleLogin} isDisabled={isLoading} />
+
+                        <View style={{ marginTop: 16 }}>
+                            <Text style={{ textAlign: 'center' }} onPress={handleShowSignUpPage}>
+                                <Text style={[textwhite(16, 400)]}>Don't have an account? </Text>
+                                <Text style={[styles.signupLink]}>Sign up</Text>
+                            </Text>
+                        </View>
                     </View>
+                </ScrollView>
+                <View style={{ height: 60 }} />
+                <View style={{ bottom: 20, width: '100%' }}>
+                    <Text style={{ textAlign: 'center' }}>
+                        <Text style={[styles.termsText]}>
+                            By signing up, you agree to our{' '}
+                        </Text>
+                        <Text style={[styles.termsLink]}>Terms & Privacy policy</Text>
+                    </Text>
                 </View>
-            </SplashBackground>
+            </View>
+        </SplashBackground>
     )
 }
 
 export default Login
 
 const styles = StyleSheet.create({
-    // logoImage:{
-    //     height: scale(25),
-    //     width: scale(25),
-    //     marginRight:scale(4)
-    // },
-    // loginSignupTextView:{
-    //     flexDirection:'row',
-    //     alignItems:'center',
-    // }
+    logoImage: {
+        height: scale(40),
+        width: scale(40),
+        marginRight: scale(4),
+    },
+    loginSignupTextView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    inputTitle: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#000',
+    },
+    placeholderText: {
+        fontSize: 14,
+        color: '#A9A9A9',
+    },
+    forgotPasswordText: {
+        fontSize: 16,
+        fontWeight: '800',
+        //color: 'rgba(0, 122, 255, 1)', // Matches the blue in the design
+        color: 'white',
+        textAlign: 'right',
+        marginVertical: 8,
+    },
+    signupLink: {
+        color: 'rgba(0, 122, 255, 1)', // Matches the blue color in the design
+        fontWeight: '800',
+        fontSize: 18
+    },
+    termsText: {
+        fontSize: 14,
+        color: 'rgba(169, 163, 163, 1)',
+    },
+    termsLink: {
+        fontSize: 14,
+        color: 'rgba(0, 122, 255, 1)',
+        fontWeight: '600',
+    },
 })
