@@ -10,6 +10,7 @@ import SplashScreen from 'react-native-splash-screen';
 import LoginSignUpHandlePage from './src/screens/loginSignup/LoginSignUpHandlePage';
 import BottomTabsNavigator from './src/Navigation/NavigationStack';
 import { AuthProvider } from './src/context/AuthContext';
+import AuthStateChange from './src/firebaseMethods/AuthStateChange';
 
 
 function App() {
@@ -25,13 +26,10 @@ function App() {
   return (
     <AuthProvider>
       <NavigationContainer>
-        {/* <SafeAreaView style={styles.safeAreaStyle} > */}
-          {/* <Text>Hello</Text> */}
-          {/* <LoginSignUpHandlePage /> */}
-          
+        <SafeAreaView style={styles.safeAreaStyle} >
+          <AuthStateChange />
           <BottomTabsNavigator />
-
-        {/* </SafeAreaView> */}
+        </SafeAreaView>
       </NavigationContainer>
     </AuthProvider>
   );

@@ -7,15 +7,22 @@ import 'react-native-gesture-handler';
 
 const HomeStack = createStackNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import LoginSignUpHandlePage from '../screens/loginSignup/LoginSignUpHandlePage';
+import { useAuth } from '../context/AuthContext';
 
 const Tab = createBottomTabNavigator();
 
+// const tabIcons = ()=> {
+  
+// }
+
 const BottomTabsNavigator = () => {
-  return (
-    // <Tab.Navigator screenOptions={{
-    //   headerShown: false,
-    // }} options={{headerShown: false}} >
-    <Tab.Navigator
+  const { user } = useAuth();
+  const isUserLogedIn = user ? true : false;
+
+  return isUserLogedIn ?
+    (
+      <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: false, // Hides the text labels below icons
@@ -23,7 +30,7 @@ const BottomTabsNavigator = () => {
           let iconSource;
 
           // Set the appropriate icon for each tab
-          if (route.name === 'Home') {
+          if (route.name === 'HomeStack') {
             iconSource = focused
               ? require('../assets/ImageIcons/Blue_Home_Icon.png') // Active icon
               : require('../assets/ImageIcons/Home_Icon.png'); // Inactive icon
@@ -57,11 +64,14 @@ const BottomTabsNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeStackNavigator} />
-      <Tab.Screen name="Connect" component={ConnectionsStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
-    </Tab.Navigator>
-  );
+        <Tab.Screen name="HomeStack" component={HomeStackNavigator} />
+        <Tab.Screen name="Connect" component={ConnectionsStackNavigator} />
+        <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+      </Tab.Navigator>
+    ) :
+    (
+      <AuthStackNavigator />
+    )
 };
 
 const HomeStackNavigator = () => {
@@ -74,6 +84,17 @@ const HomeStackNavigator = () => {
     </HomeStack.Navigator>
   );
 };
+
+const AuthStackNavigator = () => {
+  return (
+    <HomeStack.Navigator screenOptions={{
+      headerShown: false
+    }} >
+      <HomeStack.Screen name="LoginSignUpHandlePage" component={LoginSignUpHandlePage} />
+    </HomeStack.Navigator>
+  );
+};
+
 const ConnectionsStackNavigator = () => {
   return (
     <HomeStack.Navigator screenOptions={{
