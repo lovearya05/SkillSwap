@@ -97,7 +97,7 @@ const ProfileScreen = () => {
       <View style={{ paddingHorizontal: scale(16), paddingVertical: scale(8) }} >
         <View style={{ flexDirection: 'row', }} >
           <Text style={textBlk(20, 600)}>Skills of Interest</Text>
-          {editIcon()}
+          {editIcon('interestedSkills')}
         </View>
 
         <View style={{ flexDirection: 'row', paddingVertical: scale(10) }} >

@@ -11,7 +11,7 @@
 
 // export default EditProfileModal
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   View,
@@ -30,20 +30,26 @@ const AddSkillModal = ({ addSkillType='', setAddSkillType, onClose, onAddSkill }
   const [proficiency, setProficiency] = useState('Beginner');
   const [skillsList, setSkillList] = useState([]);
 
-  const { user, userData, logout, login } = useAuth();
+  const { user, userData, updateUserData, logout, login } = useAuth();
 
   console.log('userData --- >', userData)
 
   const handleAddSkill = () => {
     if(userData.email){
-      handleUpdateUser(userData.email, {
-        ...userData,
-        skills : skillsList
-      } )
+      const updatedData = (addSkillType == 'skills') ? {...userData,skills : skillsList} : {...userData, skillToLearn: skillsList}
+      handleUpdateUser(userData.email,  updatedData, ()=>  updateUserData());
     }
     setSkillList([])
     setAddSkillType('')
   };
+
+  useEffect(()=>{
+    if(addSkillType == 'skills'){
+      setSkillList(userData?.skills || [])
+    }else if(addSkillType == 'interestedSkills'){
+      setSkillList(userData?.skillToLearn || [])
+    }
+  },[addSkillType])
 
   const removeSkill = (i)=>{
     setSkillList(p=>{
@@ -88,7 +94,7 @@ const AddSkillModal = ({ addSkillType='', setAddSkillType, onClose, onAddSkill }
             })}
           </View>
           <TouchableOpacity style={styles.addButton} onPress={handleAddSkill}>
-            <Text style={styles.buttonText}>+ Add Skill</Text>
+            <Text style={styles.buttonText}>Update Skills</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.cancelButton} onPress={()=> setAddSkillType('')}>
             <Text style={styles.buttonText}>Cancel</Text>
