@@ -22,14 +22,26 @@ import {
   Image,
 } from 'react-native';
 import { textBlk } from '../../components/baseStyleSheet';
-import { scale } from '../../utilityFunctions/utilityFunctions';
+import { handleUpdateUser, scale } from '../../utilityFunctions/utilityFunctions';
+import { useAuth } from '../../context/AuthContext';
 
 const AddSkillModal = ({ addSkillType='', setAddSkillType, onClose, onAddSkill }) => {
   const [skillName, setSkillName] = useState('');
   const [proficiency, setProficiency] = useState('Beginner');
-  const [skillsList, setSkillList] = useState(['Coding']);
+  const [skillsList, setSkillList] = useState([]);
+
+  const { user, userData, logout, login } = useAuth();
+
+  console.log('userData --- >', userData)
 
   const handleAddSkill = () => {
+    if(userData.email){
+      handleUpdateUser(userData.email, {
+        ...userData,
+        skills : skillsList
+      } )
+    }
+    setSkillList([])
     setAddSkillType('')
   };
 
@@ -50,7 +62,7 @@ const AddSkillModal = ({ addSkillType='', setAddSkillType, onClose, onAddSkill }
      onRequestClose={()=> setAddSkillType('')}
      visible={
       (addSkillType == 'skills') || 
-      (addSkillType == 'interest')
+      (addSkillType == 'interestedSkills')
     } transparent animationType="slide">
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>

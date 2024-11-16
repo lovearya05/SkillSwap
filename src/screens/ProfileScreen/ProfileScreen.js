@@ -7,8 +7,9 @@ import AddSkillModal from './EditProfileModal'
 import { useAuth } from '../../context/AuthContext'
 
 const ProfileScreen = () => {
+  const [addSkillType, setAddSkillType] = useState('');
 
-  const { user, logout, login } = useAuth();
+  const { user, userData, logout, login } = useAuth();
 
   const handleEditProfileName = ()=>{
     handleUpdateUser()
@@ -23,18 +24,29 @@ const ProfileScreen = () => {
 
   }
 
-  const editIcon = () => {
+  const editIcon = (type='') => {
+    
     return (
-      <TouchableOpacity onPress={handleEditProfileName} style={{ marginLeft: scale(10) }} >
+      <TouchableOpacity onPress={()=>{
+        if(type === 'name'){
+          handleEditProfileName
+        }else if(type === 'pic'){
+          handleEditProfilePic()
+        }else if(type === 'skills'){
+          setAddSkillType('skills')
+        }else if(type === 'interestedSkills'){
+          setAddSkillType('interestedSkills')
+        }
+      }} style={{ marginLeft: scale(10) }} >
         <Image style={{ height: scale(20), width: scale(20) }} source={require('../../assets/icons/editIcon.png')} />
       </TouchableOpacity>
     )
   }
   const userProfileDetails = () => {
-    const userName = 'LovePreet'
-    const userEmail = 'lovepreet@gmail.com'
-    const userBio = 'A passionate software developer with a love for creating innovative solutions. Experienced in full-stack development and always eager to leam new technologies.'
-    const profileImage = require('../../assets/icons/userProfileIcon.png')
+    const userName = userData?.userName || ''
+    const userEmail =  userData?.email || ''
+    const userBio = userData?.bio || ''
+    const profileImage = userData?.avatarUrl || require('../../assets/icons/userProfileIcon.png')
     return (
       <View style={{ paddingVertical: scale(40), paddingHorizontal: scale(16) }} >
         <View style={{ flexDirection: 'row' }} >
@@ -58,13 +70,13 @@ const ProfileScreen = () => {
     )
   }
   const skillsSection = () => {
-    const userSkills = ['Design', 'Development', 'Coding']
+    const userSkills = userData?.skills || []
 
     return (
       <View style={{ paddingHorizontal: scale(16) }} >
         <View style={{ flexDirection: 'row', }} >
           <Text style={textBlk(20, 600)}>Skills</Text>
-          {editIcon()}
+          {editIcon('skills')}
         </View>
 
         <View style={{ flexDirection: 'row', paddingVertical: scale(10) }} >
@@ -80,7 +92,7 @@ const ProfileScreen = () => {
     )
   }
   const skillsOfInterest = () => {
-    const userSkills = ['Design', 'Development', 'Coding']
+    const userSkills = userData?.skillToLearn || []
     return (
       <View style={{ paddingHorizontal: scale(16), paddingVertical: scale(8) }} >
         <View style={{ flexDirection: 'row', }} >
@@ -177,7 +189,6 @@ const ProfileScreen = () => {
     )
   }
 
-  const [addSkillType, setAddSkillType] = useState('');
 
   return (
     <ScrollView>

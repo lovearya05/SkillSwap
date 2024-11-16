@@ -1,7 +1,6 @@
 import Toast from 'react-native-simple-toast';
 // import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// // import { setUser, setUserData } from '../redux/slicer';
 import { Alert, Dimensions, Linking, PermissionsAndroid } from 'react-native';
 const { height, width } = Dimensions.get('window')
 import firestore from '@react-native-firebase/firestore';
@@ -232,11 +231,11 @@ export const scale = (units = 0) => {
 
 export const handleUpdateUser = (userEmail='', userDate={}) => {
     try {
-      firestore().collection('users').doc('email').set(userDate).then(()=>{
-        firestore().collection('users').doc(email).get().then((userDataTemp)=>{
+      firestore().collection('users').doc(userEmail).set(userDate).then(()=>{
+        firestore().collection('users').doc(userEmail).get().then((userDataTemp)=>{
           const userDataTemp1 = userDataTemp.data();
           console.log('userData------------------->', userDataTemp1)
-          setUserData(JSON.parse(JSON.stringify(userDataTemp1)))
+          // setUserData(JSON.parse(JSON.stringify(userDataTemp1)))
         })
         showToast('Successfully updated')
       })

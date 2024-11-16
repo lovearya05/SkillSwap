@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const initialState = {
     user,
+    userData,
     isLoading,
     login,
     logout,
