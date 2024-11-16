@@ -9,6 +9,7 @@ const HomeStack = createStackNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginSignUpHandlePage from '../screens/loginSignup/LoginSignUpHandlePage';
 import { useAuth } from '../context/AuthContext';
+import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -110,8 +111,7 @@ const ProfileStackNavigator = () => {
     <HomeStack.Navigator screenOptions={{
       headerShown: false
     }} >
-      <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Details" component={DetailsScreen} />
+      <HomeStack.Screen name="ProfileScreen" component={ProfileScreen} />
     </HomeStack.Navigator>
   );
 };

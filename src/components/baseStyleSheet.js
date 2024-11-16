@@ -115,6 +115,13 @@ export const textBlk = (fontSize = 12, fontWeight = 400) => {
         color: '#000'
     }
 }
+export const textGry = (fontSize = 12, fontWeight = 400) => {
+    return {
+        fontSize: scale(fontSize),
+        fontWeight: fontWeight,
+        color: '#7E858C'
+    }
+}
 export const textOrange = (fontSize = 12, fontWeight = 400) => ({
     fontSize: scale(fontSize),
     fontWeight: fontWeight,
