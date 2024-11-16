@@ -11,7 +11,7 @@ const InputBox = ({placeholderText='', value='', setValue=()=>{}, isPassword=fal
         secureTextEntry={isPassword}
         onChangeText={(txt)=>setValue(txt)}
        style={[{
-        color:useLightTheme? '#000' : '#fff',
+        color: '#fff',
         fontSize:14,
         height:40,
         paddingHorizontal:8, paddingVertical:4, borderRadius:8, borderColor:useLightTheme? 'rgba(242, 233, 233, 1)':'rgba(131, 131, 131, 1)', width:'100%', borderWidth:1
