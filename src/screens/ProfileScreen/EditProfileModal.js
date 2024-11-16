@@ -1,16 +1,3 @@
-// import { View, Text } from 'react-native'
-// import React from 'react'
-
-// const EditProfileModal = () => {
-//   return (
-//     <View>
-//       <Text>EditProfileModal</Text>
-//     </View>
-//   )
-// }
-
-// export default EditProfileModal
-
 import React, { useEffect, useState } from 'react';
 import {
   Modal,
@@ -19,84 +6,92 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
+  ScrollView,
 } from 'react-native';
 import { textBlk } from '../../components/baseStyleSheet';
 import { handleUpdateUser, scale } from '../../utilityFunctions/utilityFunctions';
 import { useAuth } from '../../context/AuthContext';
 
-const AddSkillModal = ({ addSkillType='', setAddSkillType, onClose, onAddSkill }) => {
+const AddSkillModal = ({ addSkillType = '', setAddSkillType, onClose, onAddSkill }) => {
   const [skillName, setSkillName] = useState('');
-  const [proficiency, setProficiency] = useState('Beginner');
   const [skillsList, setSkillList] = useState([]);
 
-  const { user, userData, updateUserData, logout, login } = useAuth();
-
-  console.log('userData --- >', userData)
+  const { userData, updateUserData } = useAuth();
 
   const handleAddSkill = () => {
-    if(userData.email){
-      const updatedData = (addSkillType == 'skills') ? {...userData,skills : skillsList} : {...userData, skillToLearn: skillsList}
-      handleUpdateUser(userData.email,  updatedData, ()=>  updateUserData());
+    if (userData.email) {
+      const updatedData =
+        addSkillType === 'skills'
+          ? { ...userData, skills: skillsList }
+          : { ...userData, skillToLearn: skillsList };
+      handleUpdateUser(userData.email, updatedData, () => updateUserData());
     }
-    setSkillList([])
-    setAddSkillType('')
+    setSkillList([]);
+    setAddSkillType('');
   };
 
-  useEffect(()=>{
-    if(addSkillType == 'skills'){
-      setSkillList(userData?.skills || [])
-    }else if(addSkillType == 'interestedSkills'){
-      setSkillList(userData?.skillToLearn || [])
+  useEffect(() => {
+    if (addSkillType === 'skills') {
+      setSkillList(userData?.skills || []);
+    } else if (addSkillType === 'interestedSkills') {
+      setSkillList(userData?.skillToLearn || []);
     }
-  },[addSkillType])
+  }, [addSkillType]);
 
-  const removeSkill = (i)=>{
-    setSkillList(p=>{
-      return p.filter((_, idx)=> idx != i)
-    });
-  }
+  const removeSkill = (i) => {
+    setSkillList((prev) => prev.filter((_, idx) => idx !== i));
+  };
 
-  const addSkill = (skill='')=>{
-    if(!skill) return;
-    setSkillList(p=> [...p, skill]);
-    setSkillName('')
-  }
+  const addSkill = (skill = '') => {
+    if (!skill) return;
+    setSkillList((prev) => [...prev, skill]);
+    setSkillName('');
+  };
 
   return (
     <Modal
-     onRequestClose={()=> setAddSkillType('')}
-     visible={
-      (addSkillType == 'skills') || 
-      (addSkillType == 'interestedSkills')
-    } transparent animationType="slide">
+      onRequestClose={() => setAddSkillType('')}
+      visible={addSkillType === 'skills' || addSkillType === 'interestedSkills'}
+      transparent
+      animationType="slide"
+    >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Add New Skill</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter skill name..."
-            value={skillName}
-            onChangeText={setSkillName}
-            onSubmitEditing={()=>addSkill(skillName)}
-          />
-          <View style={{paddingVertical: scale(16), flexDirection: 'row', marginRight: scale(8)}} >
-            {skillsList.map((item,i)=>{
-              return(
-                <View style={{flexDirection: 'row', backgroundColor: '#EDEFF2', padding: scale(10), borderRadius: scale(4) }} >
-                  <Text key={i} style={[textBlk(14, 400),{ marginRight: scale(8)}]} >{item}</Text>
-                  <TouchableOpacity onPress={()=>removeSkill(i)} >
-                    {/* <Image source={require('../../assets/icons/')} /> */}
-                    <Text style={{color: '#000'}} >X</Text>
-                  </TouchableOpacity>
-                </View>
-              )
-            })}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter skill name..."
+              value={skillName}
+              onChangeText={setSkillName}
+            />
+            <TouchableOpacity
+              style={styles.addSkillButton}
+              onPress={() => addSkill(skillName)}
+            >
+              <Text style={styles.addButtonText}>Add</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.addButton} onPress={handleAddSkill}>
+          <ScrollView
+            style={styles.skillsContainer}
+            contentContainerStyle={styles.skillsContent}
+          >
+            {skillsList.map((item, i) => (
+              <View key={i} style={styles.skillChip}>
+                <Text style={styles.skillText}>{item}</Text>
+                <TouchableOpacity onPress={() => removeSkill(i)}>
+                  <Text style={styles.removeText}>X</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
+          <TouchableOpacity style={styles.updateButton} onPress={handleAddSkill}>
             <Text style={styles.buttonText}>Update Skills</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={()=> setAddSkillType('')}>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => setAddSkillType('')}
+          >
             <Text style={styles.buttonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
@@ -114,6 +109,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '80%',
+    maxHeight: '70%',
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
@@ -124,22 +120,55 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  input: {
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
+    marginBottom: 20,
+  },
+  input: {
+    flex: 1,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
-    marginBottom: 20,
   },
-  dropdown: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#ccc',
+  addSkillButton: {
+    backgroundColor: '#00bfff',
+    paddingVertical: 15,
+    paddingHorizontal: 15,
     borderRadius: 5,
-    marginBottom: 20,
+    marginLeft: 10,
   },
-  addButton: {
+  addButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  skillsContainer: {
+    width: '100%',
+    maxHeight: 200,
+  },
+  skillsContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  skillChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#EDEFF2',
+    padding: 8,
+    borderRadius: 4,
+    marginRight: 0,
+    marginBottom: 10,
+  },
+  skillText: {
+    marginRight: 8,
+  },
+  removeText: {
+    color: '#000',
+  },
+  updateButton: {
     backgroundColor: '#00bfff',
     padding: 10,
     borderRadius: 5,

@@ -1,8 +1,8 @@
 import { View } from 'react-native'
 import React from 'react'
-const HorizontalLine = ({dark=false}) => {
+const HorizontalLine = () => {
   return (
-    <View style={{borderBottomColor:'#EEEEEE', borderWidth:4, opacity:0.4}} />
+    <View style={{borderColor:'#e8e6de', borderWidth:5, opacity:0.4}}></View>
   )
 }
 export default HorizontalLine
