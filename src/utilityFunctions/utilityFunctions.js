@@ -136,20 +136,26 @@ export const getDataFromLocalStorage = async (key = '') => {
   })
 }
 
-// export const getAssessmentQuestions = () => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       firestore().collection('questions').doc('assessmentQuestions').get().then((resp) => {
-//         if (resp) resolve(resp.data()?.questionsArray)
-//       })
-//     } catch (e) {
-//       resolve()
-//       showToast('fail to fetch questions')
-//       console.log(e)
-//       handleFirebaseError(e)
-//     }
-//   })
-// }
+export const getDataFromFireBase = (collectionName = '') => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const snapshot = await firestore().collection(collectionName).get();
+      const Data = [];
+      
+      snapshot.forEach(doc => {
+        Data.push({ id: doc.id, ...doc.data() }); // Include document ID with data
+      });
+
+      resolve(Data);
+    } catch (e) {
+      resolve([]);
+      showToast('Failed to fetch data from Firebase');
+      console.error(e);
+      handleFirebaseError(e);
+    }
+  });
+};
+
 export const createdAt = () => firestore.FieldValue.serverTimestamp()
 export const updatedAt = () => firestore.FieldValue.serverTimestamp()
 

@@ -6,6 +6,7 @@ import { handleUpdateUser, requestStoragePermission, scale } from '../../utility
 import AddSkillModal from './EditProfileModal'
 import { useAuth } from '../../context/AuthContext'
 import * as ImagePicker from 'react-native-image-picker';
+import Post from '../../components/Post'
 
 const ProfileScreen = () => {
   const [addSkillType, setAddSkillType] = useState('');
@@ -242,44 +243,10 @@ const ProfileScreen = () => {
     return (
       <View style={{ paddingVertical: scale(16), }} >
         <Text style={[textBlk(20, 600), { paddingHorizontal: scale(16), }]}>Posts</Text>
-        {post()}
+        <Post />
       </View>
     )
   }
-  const post = () => {
-    const profileImage = require('../../assets/icons/userProfileIcon.png')
-    const userNAme = 'Jane Smith';
-    const creationDate = '2023-11-11 13:00'
-    const postDescription = 'Had a great time at the tech conference today. Learned a lot and met some amazing people!'
-    const postImage = require('../../assets/postTempImg.png')
-
-    return (
-      <View style={{ paddingTop: scale(16), marginTop: scale(16), backgroundColor: '#fff', paddingHorizontal: scale(16) }} >
-        <View style={{ flexDirection: 'row' }} >
-          <Image source={profileImage} style={{ height: scale(40), width: scale(40) }} />
-          <View style={{ paddingStart: scale(8) }} >
-            <Text style={textBlk(16, 600)} >{userNAme}</Text>
-            <Text style={textGry(12, 400)} >{creationDate}</Text>
-          </View>
-        </View>
-
-        <View style={{ paddingVertical: scale(12) }} >
-          <Text style={textBlk(14, 400)} >{postDescription}</Text>
-        </View>
-
-        <View style={{ paddingBottom: scale(16) }} >
-          <Image source={postImage} style={{ height: scale(280), width: scale(344), }} resizeMode={'cover'} />
-        </View>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: scale(12) }} >
-          <Image style={{ height: scale(30), width: scale(30) }} source={require('../../assets/icons/Like_Icon.png')} />
-          <Image style={{ height: scale(30), width: scale(30) }} source={require('../../assets/icons/Comment_Icon.png')} />
-          <Image style={{ height: scale(30), width: scale(30) }} source={require('../../assets/icons/Share_Icon.png')} />
-        </View>
-      </View>
-    )
-  }
-
 
   return (
     <ScrollView>
