@@ -10,6 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginSignUpHandlePage from '../screens/loginSignup/LoginSignUpHandlePage';
 import { useAuth } from '../context/AuthContext';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import HomePage from '../screens/Home/HomePage';
 
 const Tab = createBottomTabNavigator();
 
@@ -80,8 +81,7 @@ const HomeStackNavigator = () => {
     <HomeStack.Navigator screenOptions={{
       headerShown: false
     }} >
-      <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Details" component={DetailsScreen} />
+      <HomeStack.Screen name="Home" component={HomePage} />
     </HomeStack.Navigator>
   );
 };
@@ -101,7 +101,7 @@ const ConnectionsStackNavigator = () => {
     <HomeStack.Navigator screenOptions={{
       headerShown: false
     }} >
-      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Home" component={HomePage} />
       <HomeStack.Screen name="Details" component={DetailsScreen} />
     </HomeStack.Navigator>
   );
