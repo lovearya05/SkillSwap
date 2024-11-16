@@ -153,21 +153,6 @@ export const getDataFromLocalStorage = async (key = '') => {
 export const createdAt = () => firestore.FieldValue.serverTimestamp()
 export const updatedAt = () => firestore.FieldValue.serverTimestamp()
 
-// export const updateData = (inputEmail = '', dispatch = () => { }, nextFunction = () => { }, failFunction = () => { }) => {
-//   if (!inputEmail) return
-//   try {
-//     firestore().collection('users').doc(inputEmail).get().then((userDataTemp) => {
-//       const userDataTemp1 = userDataTemp.data();
-//       dispatch(setUserData(JSON.parse(JSON.stringify(userDataTemp1))))
-//       saveDataToLocalStorage('userData', userDataTemp1)
-//       nextFunction()
-//     })
-//   } catch (e) {
-//     failFunction()
-//     handleFirebaseError(e)
-//   }
-// }
-
 // export const debounceHandler = (nextFunction = () => { }, time = 0) => {
 //   let interval;
 //   return () => {
