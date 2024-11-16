@@ -8,12 +8,15 @@ import GreenButton from '../../components/GreenButton'
 import OTPPage from './OTPPage'
 import auth from '@react-native-firebase/auth';
 import { handleGoogleSignup } from './utilityFunctions'
-import { createNewDocument, generateRandom4DigitNumber, isEmailValid, saveDataToLocalStorage, scale, showToast, userExistsOrNot } from '../../utilityFunctions/utilityFunctions'
+import { createNewDocument, generateRandom4DigitNumber, handleCreateUserData, isEmailValid, saveDataToLocalStorage, scale, showToast, userExistsOrNot } from '../../utilityFunctions/utilityFunctions'
 import { useAuth } from '../../context/AuthContext'
+import firestore from '@react-native-firebase/firestore';
+
 
 const Signup = ({ setShowLoginPage, }) => {
     const vh = Dimensions.get('window').height
     const [inputEmail, setInputEmail] = useState('')
+    const [name, setName] = useState('')
     const [showEnterOtp, setShowOtp] = useState(false)
     const [inputPassword, setInputPassword] = useState('')
     // const dispatch = useDispatch()
@@ -27,7 +30,7 @@ const Signup = ({ setShowLoginPage, }) => {
                 showToast('Please enter valid email')
             } else if (!inputPassword || inputPassword.length < 6) {
                 showToast('Password must be at least 6 characters')
-            // } else if (await userExistsOrNot(inputEmail)) {
+                // } else if (await userExistsOrNot(inputEmail)) {
                 // showToast('User already exists')
             } else {
                 signupUser()
@@ -72,14 +75,40 @@ const Signup = ({ setShowLoginPage, }) => {
     const handleShowLoginPage = () => setShowLoginPage(true)
     const { setUserData, setUser } = useAuth();
 
+    const createUser = () => {
+        try {
+            firestore().collection('users').doc(inputEmail).set({
+                userName: name,
+                email: inputEmail,
+                avatarUrl: '',
+                createdAt: '',
+                skills: [],
+                skillToLearn: [],
+                isSkillsAdded: false,
+                bio: ''
+            }).then(() => {
+                firestore().collection('users').doc(inputEmail).get().then((userDataTemp) => {
+                    const userDataTemp1 = userDataTemp.data();
+                    console.log('userData------------------->', userDataTemp1)
+                    setUserData(JSON.parse(JSON.stringify(userDataTemp1)))
+                    // navigation.navigate('HandlePageToRender')
+                })
+                showToast('Account created successfully')
+            })
+        } catch (error) {
+            showToast('try again')
+            console.log(error)
+        }
+    }
+
     const signupUser = () => {
-        console.log('signup', inputEmail, inputPassword)
         try {
             auth()
                 .createUserWithEmailAndPassword(inputEmail, inputPassword)
                 .then((userCredential) => {
                     console.log('userCredential---->', userCredential?.user)
                     if (userCredential?.user) {
+                        createUser();
                         saveDataToLocalStorage('user', userCredential?.user)
                         setUser(JSON.parse(JSON.stringify(userCredential?.user)))
                     }
@@ -102,7 +131,7 @@ const Signup = ({ setShowLoginPage, }) => {
 
     useEffect(() => {
         let backhandler;
-        if(showEnterOtp){
+        if (showEnterOtp) {
             backhandler = BackHandler.addEventListener('hardwareBackPress', () => {
                 setShowOtp(false)
                 return true;
@@ -114,12 +143,12 @@ const Signup = ({ setShowLoginPage, }) => {
 
     return (
         <SplashBackground makeDark>
-            <View style={{ height: '100%', flexDirection:'column', justifyContent:'space-between' }} >
+            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-between' }} >
                 {showEnterOtp ? <OTPPage email={inputEmail} handleVerifyOTP={handleVerifyOTP} handleResendBtn={handleSendOtp} />
                     :
                     <ScrollView >
                         <View style={{ marginTop: '15%', paddingHorizontal: 16 }} >
-                        <View style={styles.loginSignupTextView} >
+                            <View style={styles.loginSignupTextView} >
                                 <Image style={styles.logoImage} source={require('../../assets/icons/CarbonMintLogo2.png')} />
                                 <Text>
                                     <Text style={[textwhite(24, 600)]} >Sign up </Text>
@@ -128,6 +157,7 @@ const Signup = ({ setShowLoginPage, }) => {
                             </View>
 
                             <View style={{ marginTop: '15%' }} >
+                                <InputView inputTitle='Name' placeholderText='Enter your name' value={name} setValue={setName} />
                                 <InputView inputTitle='Email' placeholderText='abc@gmail.com' value={inputEmail} setValue={setInputEmail} />
                                 <InputView inputTitle='Password' placeholderText='******' value={inputPassword} setValue={setInputPassword} isPassword />
                             </View>
@@ -146,7 +176,7 @@ const Signup = ({ setShowLoginPage, }) => {
                         </View>
                     </ScrollView  >
                 }
-                <View style={{height:40}} />
+                <View style={{ height: 40 }} />
                 <View style={{ bottom: 20, width: '100%' }} >
                     <Text style={{ textAlign: 'center' }} >
                         <Text style={[textwhite(12, 400), { color: 'rgba(169, 163, 163, 1)' }]} >By signing up, you agree to our </Text>
@@ -161,13 +191,13 @@ const Signup = ({ setShowLoginPage, }) => {
 export default Signup
 
 const styles = StyleSheet.create({
-    logoImage:{
+    logoImage: {
         height: scale(25),
         width: scale(25),
-        marginRight:scale(4)
+        marginRight: scale(4)
     },
-    loginSignupTextView:{
-        flexDirection:'row',
-        alignItems:'center',
+    loginSignupTextView: {
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 })
