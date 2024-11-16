@@ -6,10 +6,10 @@ import React, { useEffect } from 'react';
 import { useColorScheme, StatusBar, SafeAreaView, StyleSheet, Platform, Text } from 'react-native';
 import { Colors, } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer, } from '@react-navigation/native';
-// import DrawerNavigator from './src/navigator/Navigator';
 import SplashScreen from 'react-native-splash-screen';
-
-
+import LoginSignUpHandlePage from './src/screens/loginSignup/LoginSignUpHandlePage';
+import BottomTabsNavigator from './src/Navigation/NavigationStack';
+import { AuthProvider } from './src/context/AuthContext';
 
 
 function App() {
@@ -23,11 +23,17 @@ function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.safeAreaStyle} >
-        <Text>Hello</Text>
-      </SafeAreaView>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        {/* <SafeAreaView style={styles.safeAreaStyle} > */}
+          {/* <Text>Hello</Text> */}
+          {/* <LoginSignUpHandlePage /> */}
+          
+          <BottomTabsNavigator />
+
+        {/* </SafeAreaView> */}
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 

@@ -1,35 +1,35 @@
 import Toast from 'react-native-simple-toast';
 // import firestore from '@react-native-firebase/firestore';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // // import { setUser, setUserData } from '../redux/slicer';
 import { Alert, Dimensions, Linking, PermissionsAndroid } from 'react-native';
 const { height, width } = Dimensions.get('window')
 
-// export const showToast = (text = '') => {
-//   Toast.show(text);
-// }
-// export const isNumber = (txt = '') => /^\d+$/.test(txt)
+export const showToast = (text = '') => {
+  Toast.show(text);
+}
+export const isNumber = (txt = '') => /^\d+$/.test(txt)
 
-// export const getIn2Digit = (txt = '') => `${txt}`.padStart(2, 0)
-// export const fixedToPoint = (txt = '', point = 1) => parseFloat(txt).toFixed(point)
-// export function currentDateTime() {
-//   const currentDate = new Date();
+export const getIn2Digit = (txt = '') => `${txt}`.padStart(2, 0)
+export const fixedToPoint = (txt = '', point = 1) => parseFloat(txt).toFixed(point)
+export function currentDateTime() {
+  const currentDate = new Date();
 
-//   const year = currentDate.getFullYear();
-//   const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-//   const day = String(currentDate.getDate()).padStart(2, '0');
-//   const hours = String(currentDate.getHours()).padStart(2, '0');
-//   const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-//   const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const seconds = String(currentDate.getSeconds()).padStart(2, '0');
 
-//   return `${year}${month}${day}${hours}${minutes}${seconds}`;
-// }
-// export const isEmailValid = (email) => {
-//   if (!email) return false;
-//   const email_regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-//   return email_regex.test(email)
+  return `${year}${month}${day}${hours}${minutes}${seconds}`;
+}
+export const isEmailValid = (email) => {
+  if (!email) return false;
+  const email_regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+  return email_regex.test(email)
 
-// }
+}
 
 // export const createNewDocument = (collectionName = '', dataToCreate = {}, nextFunction = () => { }, errorMessage = '', errorFunction = () => { }) => {
 //   try {
@@ -114,25 +114,25 @@ const { height, width } = Dimensions.get('window')
 //       break;
 //   }
 // }
-// export const saveDataToLocalStorage = async (key = '', data = {}) => {
-//   try {
-//     await AsyncStorage.setItem(key, JSON.stringify(data));
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
-// export const getDataFromLocalStorage = async (key = '') => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       const data = await AsyncStorage.getItem(key);
-//       if (data) resolve(JSON.parse(data))
-//       else resolve(null)
-//     } catch (e) {
-//       resolve(null)
-//       console.log(e)
-//     }
-//   })
-// }
+export const saveDataToLocalStorage = async (key = '', data = {}) => {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getDataFromLocalStorage = async (key = '') => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data) resolve(JSON.parse(data))
+      else resolve(null)
+    } catch (e) {
+      resolve(null)
+      console.log(e)
+    }
+  })
+}
 // export const uploadOrUpdateAcessmentQuestion = (questionsData) => {
 //   consoleMessage('utility Functions', 'upload questions to firebase', questionsData)
 //   try {
