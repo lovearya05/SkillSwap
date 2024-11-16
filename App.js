@@ -8,8 +8,8 @@ import { Colors, } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer, } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 import LoginSignUpHandlePage from './src/screens/loginSignup/LoginSignUpHandlePage';
-
-
+import BottomTabsNavigator from './src/Navigation/NavigationStack';
+import { AuthProvider } from './src/context/AuthContext';
 
 
 function App() {
@@ -23,13 +23,17 @@ function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.safeAreaStyle} >
-        {/* <Text>Hello</Text> */}
-        <LoginSignUpHandlePage />
-        
-      </SafeAreaView>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        {/* <SafeAreaView style={styles.safeAreaStyle} > */}
+          {/* <Text>Hello</Text> */}
+          {/* <LoginSignUpHandlePage /> */}
+          
+          <BottomTabsNavigator />
+
+        {/* </SafeAreaView> */}
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 
