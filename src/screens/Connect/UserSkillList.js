@@ -36,23 +36,23 @@ const UserSkillList = ({ otherUser = '', }) => {
   const skills = otherUserData?.skills || []
 
   return (
-    <View>
+    <View >
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }} >
-        <View style={{ flexDirection: 'row', paddingVertical: scale(18), paddingHorizontal: scale(16) }} >
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: scale(16) }} >
+        <View style={{ flexDirection: 'row', paddingVertical: scale(18), width: scale(200) }} >
           <Image source={profileImage} style={{ height: scale(45), width: scale(45), borderRadius: scale(200) }} />
-
           <View style={{ marginLeft: scale(12) }} >
             <Text style={textBlk(14, 500)} >{profileName}</Text>
             <View style={{ flexDirection: 'row', overflow: 'hidden' }} >
               {skills.map((item, i) => {
                 return (
-                  <Text numberOfLines={1} key={i} style={[textGry(14, 400), { marginRight: scale(8), }]} >{item}</Text>
+                  <Text numberOfLines={1} key={i} style={[textGry(14, 400), { }]} >{item}</Text>
                 )
               })}
             </View>
           </View>
         </View>
+
         <TouchableOpacity onPress={handleStartLearning} style={{ opacity: 1, backgroundColor: 'blue', paddingHorizontal: scale(12), paddingVertical: scale(8), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
           <Text style={[textwhite(16, 500), { textAlign: 'center' }]} >{'Start Learning'}</Text>
         </TouchableOpacity>
