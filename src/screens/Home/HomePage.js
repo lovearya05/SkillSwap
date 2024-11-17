@@ -27,13 +27,15 @@ const HomePage = () => {
     )
   }
 
+  const [renderNumber, setRenderNumber] = useState(0);
+
   return (
     <SafeAreaView>
       {topHeader()}
       <HorizontalLine />
-      <CreatePostModal showCreatePost={showCreatePost} setShowCreatePost={setShowCreatePost} />
+      <CreatePostModal setRenderNumber={setRenderNumber} showCreatePost={showCreatePost} setShowCreatePost={setShowCreatePost} />
 
-      <ShowPosts />
+      <ShowPosts renderNumber={renderNumber} />
 
 
     </SafeAreaView>
