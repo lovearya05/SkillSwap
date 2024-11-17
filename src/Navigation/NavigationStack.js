@@ -61,7 +61,7 @@ const BottomTabsNavigator = () => {
             />
           );
         },
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: '#3776ff',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
           paddingBottom: 5,
