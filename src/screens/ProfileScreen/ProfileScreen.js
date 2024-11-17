@@ -8,6 +8,7 @@ import { useAuth } from '../../context/AuthContext'
 import * as ImagePicker from 'react-native-image-picker';
 import Post from '../../components/Post'
 import HorizontalLine from '../../components/HorizontalLine'
+import ShowPosts from '../Home/ShowPosts'
 
 
 const ProfileScreen = () => {
@@ -264,7 +265,7 @@ const ProfileScreen = () => {
       <HorizontalLine/>
       {suggestedProfiles()}
       <HorizontalLine/>
-      {renderPosts()}
+      <ShowPosts renderCurrentUserOnly={true} />
       <View>
 
       </View>
