@@ -29,7 +29,7 @@ const Post = ({data={}, }) => {
   const postImages = data?.postImage
 
   return (
-    <View style={{ paddingTop: scale(16), marginTop: scale(16), backgroundColor: '#fff', paddingHorizontal: scale(16) }} >
+    <View style={{ paddingTop: scale(16), marginBottom : scale(8), backgroundColor: '#fff', paddingHorizontal: scale(16) }} >
       <View style={{ flexDirection: 'row' }} >
         <Image source={{uri : profileImage}} style={{ height: scale(40), width: scale(40) }} />
         <View style={{ paddingStart: scale(8) }} >

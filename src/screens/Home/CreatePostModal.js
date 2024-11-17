@@ -136,9 +136,9 @@ const CreatePostModal = ({ showCreatePost = false, setShowCreatePost = () => { }
 
   };
 
-  if (uploading && showCreatePost) {
+  if (uploading) {
     return (
-      <View style={{ height: '100%', flexDirection: 'row', backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }} >
+      <View style={{flexDirection: 'row', backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }} >
         <LoadingScreen />
       </View>
     )
