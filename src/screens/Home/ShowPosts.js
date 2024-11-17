@@ -3,15 +3,27 @@ import React, { useEffect } from 'react'
 import { getDataFromFireBase } from '../../utilityFunctions/utilityFunctions'
 import { useIsFocused } from '@react-navigation/native'
 import Post from '../../components/Post'
+import { useAuth } from '../../context/AuthContext'
 
-const ShowPosts = () => {
+const ShowPosts = ({ renderCurrentUserOnly = false, }) => {
   const [posts, setPosts] = React.useState([])
+  const { user, userData, logout, login, updateUserData } = useAuth();
+
 
   const fetchPosts = async () => {
     const data = await getDataFromFireBase('posts')
-    if (data) setPosts(data);
+    if (renderCurrentUserOnly) {
+      if (data) {
+        const filteredPosts = data.filter(post => post.email == userData.email)
+        setPosts(filteredPosts);
+      }
+    } else {
+      if (data) setPosts(data);
+    }
   }
   const isFocused = useIsFocused()
+
+  console.log('posts 0000', posts)
 
   useEffect(() => {
     fetchPosts()
@@ -30,7 +42,6 @@ const ShowPosts = () => {
           )
         }}
       />
-      <Text>Show Posts</Text>
     </View>
   )
 }
