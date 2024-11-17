@@ -13,12 +13,12 @@ const HomePage = () => {
 
   const topHeader = ()=>{
     return(
-      <View style={{paddingVertical: scale(8), paddingHorizontal: scale(16), flexDirection:'row', paddingVertical: scale(8), backgroundColor: '#fff'}} >
+      <View style={{paddingVertical: scale(8), justifyContent:'space-between', paddingHorizontal: scale(16), flexDirection:'row', paddingVertical: scale(8), backgroundColor: '#fff'}} >
          <Image source={profileImage} style={{ height: scale(30), width: scale(30), borderRadius: scale(200) }} />
 
-         <View style={{borderColor: '#000', borderWidth: scale(1), width: scale(250), borderRadius: scale(4), marginHorizontal: scale(8)}} >
           {/* search bar  */}
-         </View>
+         {/* <View style={{borderColor: '#000', borderWidth: scale(1), width: scale(250), borderRadius: scale(4), marginHorizontal: scale(8)}} >
+         </View> */}
 
          <TouchableOpacity style={{marginStart: scale(12)}} onPress={()=> setShowCreatePost(true)} >
           <Image source={require('../../assets/icons/writeIcon.png')} style={{height: scale(30), width: scale(30)}} />

@@ -26,6 +26,7 @@ function App() {
   return (
     <AuthProvider>
       <NavigationContainer>
+        <StatusBar />
         <SafeAreaView style={styles.safeAreaStyle} >
           <AuthStateChange />
           <BottomTabsNavigator />

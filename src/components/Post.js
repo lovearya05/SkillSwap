@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import HorizontalLine from './HorizontalLine';
 
 const { View, Image, Text, ScrollView } = require('react-native');
 const { textBlk, textGry } = require('./baseStyleSheet');
@@ -49,11 +50,10 @@ const Post = ({data={}, }) => {
         )
       })}
       </ScrollView>
-
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: scale(12) }} >
-        <Image style={{ height: scale(30), width: scale(30) }} source={require('../assets/icons/Like_Icon.png')} />
-        <Image style={{ height: scale(30), width: scale(30) }} source={require('../assets/icons/Comment_Icon.png')} />
-        <Image style={{ height: scale(30), width: scale(30) }} source={require('../assets/icons/Share_Icon.png')} />
+        <Image style={{ height: scale(23), width: scale(23) }} source={require('../assets/icons/Like_Icon.png')} />
+        <Image style={{ height: scale(23), width: scale(23) }} source={require('../assets/icons/Comment_Icon.png')} />
+        <Image style={{ height: scale(23), width: scale(23) }} source={require('../assets/icons/Share_Icon.png')} />
       </View>
     </View>
   )
