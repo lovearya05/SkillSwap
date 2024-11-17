@@ -46,7 +46,7 @@ const LearningScreen = ({ route }) => {
   const renderBody = () => {
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center' }} >
-        <TouchableOpacity onPress={handleStartCall} style={{ opacity: 1, backgroundColor: 'blue', paddingHorizontal: scale(12), paddingVertical: scale(8), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
+        <TouchableOpacity onPress={handleStartCall} style={{ opacity: 1, backgroundColor: '#3776ff', paddingHorizontal: scale(12), paddingVertical: scale(8), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
           <Text style={[textwhite(16, 500), { textAlign: 'center' }]} >{'Start Call'}</Text>
         </TouchableOpacity>
       </View>
