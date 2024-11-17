@@ -13,28 +13,26 @@ const UserSkillList = ({ otherUser = '', }) => {
 
 
   const fetchData = async () => {
-    if (otherUser) {
-      getUserData(otherUser, (data) => {
-        setOthereUserData(data)
-      })
-    }
+    getUserData(otherUser.email, (data) => {
+      setOthereUserData(data)
+    })
   }
   const isFocused = useIsFocused()
-  console.log('otherUserData',)
+  
   useEffect(() => {
-    if (otherUser) {
+    if (otherUser.email) {
       fetchData()
     }
-  }, [otherUser, isFocused])
+  }, [otherUser.email, isFocused])
 
   const navigation = useNavigation()
 
-  const handleStartLearning = () =>{
-    navigation.navigate('LearningScreen', {learnWith: otherUserData })
+  const handleStartLearning = () => {
+    navigation.navigate('LearningScreen', { learnWith: otherUserData })
   }
 
   const profileImage = otherUserData?.avatarUrl ? { uri: otherUserData?.avatarUrl } : require('../../assets/icons/userProfileIcon.png')
-  const profileName = otherUserData?.name ? otherUserData?.name : 'User Name'
+  const profileName = otherUserData?.userName ? otherUserData?.userName : 'User Name'
   const skills = otherUserData?.skills || []
 
   return (
@@ -55,7 +53,7 @@ const UserSkillList = ({ otherUser = '', }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress={handleStartLearning } style={{ opacity: 1, backgroundColor: 'blue', paddingHorizontal: scale(12), paddingVertical: scale(8), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
+        <TouchableOpacity onPress={handleStartLearning} style={{ opacity: 1, backgroundColor: 'blue', paddingHorizontal: scale(12), paddingVertical: scale(8), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
           <Text style={[textwhite(16, 500), { textAlign: 'center' }]} >{'Start Learning'}</Text>
         </TouchableOpacity>
       </View>

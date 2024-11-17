@@ -3,10 +3,15 @@ import {BackHandler, Alert} from 'react-native';
 import {JitsiMeeting} from '@jitsi/react-native-sdk';
 import {useNavigation} from '@react-navigation/native';
 import {AppContext} from '../../theme/AppContext';
+import { useAuth } from '../../context/AuthContext';
 
 const JitsiMeet = ({route}) => {
   const jitsiMeeting = useRef(null);
   const navigation = useNavigation();
+  const { meetUrl = {} } = route?.params;
+  const { user, userData } = useAuth();
+
+  console.log('meetUrl', meetUrl)
 
   const onReadyToClose = useCallback(() => {
     Alert.alert(
@@ -62,13 +67,12 @@ const JitsiMeet = ({route}) => {
         'breakout-rooms.enabled': false,
       }}
       userInfo={{
-        displayName: 'lovepreet',
+        displayName: userData?.userName || 'Unknown user' ,
         email: 'lovepreetarya1405@gmail.com',
       }}
       ref={jitsiMeeting}
       style={{flex: 1}}
-      room={'lovepreet2'}
-      // serverURL={'https://meet.indephysio.com'}
+      room={'lovepreetRoom'}
       serverURL={'https://meet.jit.si'}
     />
   );

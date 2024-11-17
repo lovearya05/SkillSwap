@@ -3,12 +3,12 @@ import React from 'react'
 import { scale } from '../../utilityFunctions/utilityFunctions';
 import { textBlk, textGry, textwhite } from '../../components/baseStyleSheet';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../context/AuthContext';
 
 const LearningScreen = ({ route }) => {
   const { learnWith = {} } = route?.params;
   const navigation = useNavigation();
-
-  console.log('learnWith', learnWith)
+  const { user, userData } = useAuth();
 
 
   const topHeader = () => {
@@ -36,7 +36,11 @@ const LearningScreen = ({ route }) => {
     )
   }
   const handleStartCall = () => {
-    navigation.navigate('JitsiMeet')
+    const connectedUsers = learnWith?.connectedUser || []
+    const conDetails = connectedUsers.filter(item=> item.email == userData.email);
+    const meetUrl = conDetails[0] ? conDetails[0]?.meetUrl : null;
+
+    navigation.navigate('JitsiMeet', {meetUrl})
   }
 
   const renderBody = () => {

@@ -23,8 +23,6 @@ const ShowPosts = ({ renderCurrentUserOnly = false, renderNumber=0 }) => {
   }
   const isFocused = useIsFocused()
 
-  console.log('posts 0000', posts)
-
   useEffect(() => {
     fetchPosts()
   }, [isFocused, renderNumber])
