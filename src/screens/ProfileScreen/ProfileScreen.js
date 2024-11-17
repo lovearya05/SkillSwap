@@ -1,33 +1,47 @@
 import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { } from 'react-native-svg'
-import { textBlk, textGry } from '../../components/baseStyleSheet'
-import { handleUpdateUser, requestStoragePermission, scale } from '../../utilityFunctions/utilityFunctions'
+import { textBlk, textGry, textwhite } from '../../components/baseStyleSheet'
+import { getDataFromFireBase, handleUpdateUser, requestStoragePermission, scale } from '../../utilityFunctions/utilityFunctions'
 import AddSkillModal from './EditProfileModal'
 import { useAuth } from '../../context/AuthContext'
 import * as ImagePicker from 'react-native-image-picker';
 import Post from '../../components/Post'
 import HorizontalLine from '../../components/HorizontalLine'
 import ShowPosts from '../Home/ShowPosts'
+import { useIsFocused } from '@react-navigation/native'
 
 
 const ProfileScreen = () => {
   const [addSkillType, setAddSkillType] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [users, setUsers] = useState([])
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetchUsers()
+  }, [userData, isFocused])
+
+  const fetchUsers = async () => {
+    const data = await getDataFromFireBase('users')
+    console.log('datadatadatadatadatadatadatadata', data)
+    if (data) setUsers(data.filter((usr) => usr.email != userData.email));
+  }
 
   const { user, userData, logout, login, updateUserData } = useAuth();
 
-  const handleAddSkill = (imageUrl='') => {
-    if(userData.email){
-      const updatedData = {...userData, avatarUrl: imageUrl}
-      handleUpdateUser(userData.email,  updatedData, ()=>  updateUserData());
+  const handleAddSkill = (imageUrl = '') => {
+    if (userData.email) {
+      const updatedData = { ...userData, avatarUrl: imageUrl }
+      handleUpdateUser(userData.email, updatedData, () => updateUserData());
     }
   };
 
   const pickImage = async () => {
     const response = await requestStoragePermission();
-    if(!response) return;
+    if (!response) return;
     const options = {
       mediaType: 'photo',
       quality: 1,
@@ -115,21 +129,37 @@ const ProfileScreen = () => {
     }
   };
 
-  const handleEditProfileName = ()=>{
+  const handleEditProfileName = () => {
     handleUpdateUser()
   }
 
-  const editIcon = (type='') => {
-    
+  const ConnectToUser = (connectionTo = {}) => {
+    const connectedData = userData['connectedUser'] || []
+    connectedData.push(connectionTo?.email);
+    const currentUser = { ...userData, connectedUser: connectedData }
+
+    // 2nd user 
+    const connectedData2 = connectionTo['connectedUser'] || []
+    connectedData2.push(userData.email);
+    const connectedUser = { ...connectionTo, connectedUser: connectedData2 }
+
+    handleUpdateUser(connectionTo?.email, connectedUser)
+    handleUpdateUser(userData?.email, currentUser, () => {
+      fetchUsers()
+      updateUserData()
+    })
+  }
+
+  const editIcon = (type = '') => {
     return (
-      <TouchableOpacity onPress={()=>{
-        if(type === 'name'){
+      <TouchableOpacity onPress={() => {
+        if (type === 'name') {
           handleEditProfileName
-        }else if(type === 'pic'){
+        } else if (type === 'pic') {
           pickImage()
-        }else if(type === 'skills'){
+        } else if (type === 'skills') {
           setAddSkillType('skills')
-        }else if(type === 'interestedSkills'){
+        } else if (type === 'interestedSkills') {
           setAddSkillType('interestedSkills')
         }
       }} style={{ marginLeft: scale(10) }} >
@@ -139,16 +169,16 @@ const ProfileScreen = () => {
   }
   const userProfileDetails = () => {
     const userName = userData?.userName || ''
-    const userEmail =  userData?.email || ''
+    const userEmail = userData?.email || ''
     const userBio = userData?.bio || ''
-    const profileImage = userData?.avatarUrl ? {uri : userData?.avatarUrl} : require('../../assets/icons/userProfileIcon.png')
+    const profileImage = userData?.avatarUrl ? { uri: userData?.avatarUrl } : require('../../assets/icons/userProfileIcon.png')
     return (
       <View style={{ paddingVertical: scale(40), paddingHorizontal: scale(16) }} >
         <View style={{ flexDirection: 'row' }} >
           <View style={{}} >
             <Image source={profileImage} style={{ height: scale(100), width: scale(100), borderRadius: scale(200) }} />
-            <View style={{position: 'absolute', bottom: 0, left: scale(30), bottom: scale(5)}} >
-            {editIcon('pic')}
+            <View style={{ position: 'absolute', bottom: 0, left: scale(30), bottom: scale(5) }} >
+              {editIcon('pic')}
             </View>
           </View>
           <View style={{ paddingHorizontal: scale(20) }} >
@@ -207,22 +237,30 @@ const ProfileScreen = () => {
       </View>
     )
   }
-
   const suggestedProfiles = () => {
-    const profileImage = require('../../assets/icons/userProfileIcon.png')
-    const profileName = 'John Doe'
-    const skills = ['Gutar', 'Singing', 'Playing'];
 
     return (
-      <ScrollView >
+      <View >
+        <View style={{ flexDirection: 'row', paddingHorizontal: 16, paddingBottom: scale(16)}} >
+          <Text style={textBlk(20, 600)}>Suggestions</Text>
+        </View>
         <FlatList
-          data={[1, 2, 3, 4]}
-          horizontal
+          data={users}
           showsHorizontalScrollIndicator={false}
+          horizontal
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
+            const profileImage = item?.avatarUrl ? { uri: item?.avatarUrl } : require('../../assets/icons/userProfileIcon.png')
+            const profileName = item?.userName || ''
+            const skills = item?.skills || []
+            const isUserConnected = userData?.connectedUser?.some((usr) => usr == item?.email)
+
             return (
-              <View style={{ paddingHorizontal: scale(12), marginLeft: scale(16), paddingVertical: scale(10), borderRadius: scale(8), backgroundColor: '#fff', width: scale(140) }} >
-                <Image source={profileImage} style={{ height: scale(100), width: scale(100) }} />
+              <View style={{ paddingHorizontal: scale(12), marginLeft: scale(20), paddingVertical: scale(10), borderRadius: scale(8), backgroundColor: '#fff', width: scale(160) }} >
+                <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: scale(8) }} >
+                  <Image source={profileImage} style={{ height: scale(100), width: scale(100), borderRadius: scale(200) }} />
+                </View>
+
                 <View>
                   <Text style={textBlk(14, 500)} >{profileName}</Text>
                   <View style={{ flexDirection: 'row', overflow: 'hidden' }} >
@@ -233,38 +271,35 @@ const ProfileScreen = () => {
                     })}
                   </View>
                 </View>
+
+                {/* connect button  */}
+                <TouchableOpacity disabled={isUserConnected} onPress={() => ConnectToUser(item)} style={{ opacity: isUserConnected ? 0.8 : 1, backgroundColor: isUserConnected ? 'green' : 'blue', paddingVertical: scale(4), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
+                  <Text style={[textwhite(16, 500), { textAlign: 'center' }]} >{isUserConnected ? 'Connected' : 'Connect'}</Text>
+                </TouchableOpacity>
               </View>
             )
           }}
         />
 
-      </ScrollView>
-    )
-  }
-
-  const renderPosts = () => {
-    return (
-      <View style={{ paddingVertical: scale(16), }} >
-        <Text style={[textBlk(20, 600), { paddingHorizontal: scale(16), }]}>Posts</Text>
-        <Post />
       </View>
     )
   }
+
 
   return (
     <ScrollView>
 
       <AddSkillModal addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
 
-      <HorizontalLine/>
+      <HorizontalLine />
       {userProfileDetails()}
       {/* <HorizontalLine/> */}
       {skillsSection()}
       {/* <HorizontalLine/> */}
       {skillsOfInterest()}
-      <HorizontalLine/>
+      <HorizontalLine />
       {suggestedProfiles()}
-      <HorizontalLine/>
+      <HorizontalLine />
       <ShowPosts renderCurrentUserOnly={true} />
       <View>
 
