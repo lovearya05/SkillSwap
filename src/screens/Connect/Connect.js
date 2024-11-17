@@ -19,12 +19,13 @@ const Connect = () => {
 
   const ConnectToUser = (connectionTo = {}) => {
     const connectedData = userData['connectedUser'] || []
-    connectedData.push(connectionTo?.email);
-    const currentUser = { ...userData, connectedUser: connectedData }
-
+    const meetUrl = userData.userName + "-" + connectionTo.userName
+    connectedData.push({email: connectionTo?.email, meetUrl});
+    const currentUser = { ...userData, connectedUser: connectedData,  }
+    
     // 2nd user 
     const connectedData2 = connectionTo['connectedUser'] || []
-    connectedData2.push(userData.email);
+    connectedData2.push({email: userData.email, meetUrl});
     const connectedUser = { ...connectionTo, connectedUser: connectedData2 }
 
     handleUpdateUser(connectionTo?.email, connectedUser)
@@ -57,7 +58,7 @@ const Connect = () => {
             const profileImage = item?.avatarUrl ? { uri: item?.avatarUrl } : require('../../assets/icons/userProfileIcon.png')
             const profileName = item?.userName || ''
             const skills = item?.skills || []
-            const isUserConnected = userData?.connectedUser?.some((usr) => usr == item?.email)
+            const isUserConnected = userData?.connectedUser?.some((usr) => usr.email == item?.email)
 
             return (
               <View style={{ paddingHorizontal: scale(12), marginBottom: scale(20), marginLeft: scale(20), paddingVertical: scale(10), borderRadius: scale(8), backgroundColor: '#fff', width: scale(160) }} >
