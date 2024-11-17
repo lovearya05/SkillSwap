@@ -6,7 +6,7 @@ const InputBox = ({ placeholderText = '', multiline=false, height = 0, value = '
   return (
     <View style={{ marginVertical: 4 }} >
       <TextInput
-        placeholderTextColor={useLightTheme ? 'rgba(207, 204, 204, 0.5)' : 'rgba(207, 204, 204, 0.5)'}
+        placeholderTextColor={useLightTheme ? 'rgba(207, 204, 204, 0.5)' : 'rgba(131, 131, 131, 1)'}
         placeholder={placeholderText}
         value={value}
         secureTextEntry={isPassword}

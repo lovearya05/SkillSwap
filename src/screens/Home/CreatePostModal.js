@@ -166,7 +166,7 @@ const CreatePostModal = ({ showCreatePost = false, setShowCreatePost = () => { }
               value={postDesc}
               setValue={setPostDesc}
               multiline
-              useLightTheme={true}
+              useLightTheme={false}
               style={styles.input}
             />
 
