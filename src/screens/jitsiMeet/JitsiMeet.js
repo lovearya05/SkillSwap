@@ -2,6 +2,7 @@ import React, {useCallback, useRef, useEffect, useContext} from 'react';
 import {BackHandler, Alert} from 'react-native';
 import {JitsiMeeting} from '@jitsi/react-native-sdk';
 import {useNavigation} from '@react-navigation/native';
+import {AppContext} from '../../theme/AppContext';
 
 const JitsiMeet = ({route}) => {
   const jitsiMeeting = useRef(null);
@@ -22,7 +23,7 @@ const JitsiMeet = ({route}) => {
             if (jitsiMeeting.current) {
               jitsiMeeting.current.close();
             }
-            navigation.navigate('Home');
+            navigation.navigate('Connect', );
           },
         },
       ],
@@ -53,7 +54,7 @@ const JitsiMeet = ({route}) => {
       flags={{
         'call-integration.enabled': false,
         'fullscreen.enabled': true,
-        'pip.enabled': true,
+        'pip.enabled': false,
         'pip-while-screen-sharing.enabled': true,
         'security-options.enabled': false,
         'invite.enabled': false,
@@ -61,14 +62,14 @@ const JitsiMeet = ({route}) => {
         'breakout-rooms.enabled': false,
       }}
       userInfo={{
-        displayName: 'LovePreet',
-        email: `lovepreetarya1405@gmail.com`,
+        displayName: 'lovepreet',
+        email: 'lovepreetarya1405@gmail.com',
       }}
       ref={jitsiMeeting}
       style={{flex: 1}}
-      room={'lovearya'}
-      serverURL={'https://meet.jitsi.com'}
-      // serverURL={'https://meet.SkillSwap.com'}
+      room={'lovepreet2'}
+      // serverURL={'https://meet.indephysio.com'}
+      serverURL={'https://meet.jit.si'}
     />
   );
 };

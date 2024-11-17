@@ -136,20 +136,26 @@ export const getDataFromLocalStorage = async (key = '') => {
   })
 }
 
-// export const getAssessmentQuestions = () => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       firestore().collection('questions').doc('assessmentQuestions').get().then((resp) => {
-//         if (resp) resolve(resp.data()?.questionsArray)
-//       })
-//     } catch (e) {
-//       resolve()
-//       showToast('fail to fetch questions')
-//       console.log(e)
-//       handleFirebaseError(e)
-//     }
-//   })
-// }
+export const getDataFromFireBase = (collectionName = '') => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const snapshot = await firestore().collection(collectionName).get();
+      const Data = [];
+      
+      snapshot.forEach(doc => {
+        Data.push({ id: doc.id, ...doc.data() }); // Include document ID with data
+      });
+
+      resolve(Data);
+    } catch (e) {
+      resolve([]);
+      showToast('Failed to fetch data from Firebase');
+      console.error(e);
+      handleFirebaseError(e);
+    }
+  });
+};
+
 export const createdAt = () => firestore.FieldValue.serverTimestamp()
 export const updatedAt = () => firestore.FieldValue.serverTimestamp()
 
@@ -234,3 +240,37 @@ export const requestStoragePermission = async () => {
 
 
 }
+
+export const getUserData = (userEmail='', responseData=()=>{})=>{
+  // return new Promise((resolve, reject) => {
+    try {
+      firestore().collection('users').doc(userEmail).get().then((userDataTemp) => {
+        const userDataTemp1 = userDataTemp.data()
+        if (userDataTemp1) {
+          responseData(userDataTemp1)
+          // console.log('userDataTemp1', userDataTemp1)
+          // resolve(userDataTemp1 ? JSON.parse(JSON.stringify(userDataTemp1)) : null)
+        }
+      })
+
+      // resolve(null)
+    } catch (error) {
+      // resolve(null)
+      console.log(error)
+    }
+  // })
+}
+
+export const convertFirestoreTimestamp = (timestamp) => {
+  if (!timestamp || !timestamp.seconds) {
+    return null; // Handle cases where the timestamp is invalid
+  }
+
+  // Convert seconds to milliseconds
+  const date = new Date(timestamp.seconds * 1000);
+
+  // Format the date into 'YYYY-MM-DD HH:mm'
+  const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+  return formattedDate;
+};

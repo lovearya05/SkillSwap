@@ -16,7 +16,7 @@ const AddSkillModal = ({ addSkillType = '', setAddSkillType, onClose, onAddSkill
   const [skillName, setSkillName] = useState('');
   const [skillsList, setSkillList] = useState([]);
 
-  const { userData, updateUserData } = useAuth();
+  const { user, userData, updateUserData, logout, login } = useAuth();
 
   const handleAddSkill = () => {
     if (userData.email) {

@@ -11,10 +11,6 @@ const HomePage = () => {
   const profileImage = {uri : userData?.avatarUrl} || require('../../assets/icons/userProfileIcon.png')
   const [showCreatePost, setShowCreatePost] = useState(false);
 
-  const handleCreatePoste = ()=>{
-   
-  }
-
   const topHeader = ()=>{
     return(
       <View style={{paddingVertical: scale(8), paddingHorizontal: scale(16), flexDirection:'row', paddingVertical: scale(8), backgroundColor: '#fff'}} >
