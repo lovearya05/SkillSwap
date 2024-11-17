@@ -8,14 +8,14 @@ import { useAuth } from '../../context/AuthContext'
 import LoadingScreen from '../../components/LoadingScreen'
 
 
-const CreatePostModal = ({ showCreatePost = false, setShowCreatePost = () => { } }) => {
+const CreatePostModal = ({ showCreatePost = false, setShowCreatePost = () => { }, setRenderNumber=()=>{} }) => {
   const [postDesc, setPostDesc] = useState('');
   const [images, setImages] = useState(null);
   const [uploading, setUploading] = useState(false);
   const { user, userData, logout, login, updateUserData } = useAuth();
 
 
-  console.log('userData', userData)
+  console.log('userData', Math.floor(Math.random()*100))
 
   const postPost = (uploadedUrls = []) => {
     if ((images && images.lenght > 0) || postDesc) {
@@ -26,11 +26,14 @@ const CreatePostModal = ({ showCreatePost = false, setShowCreatePost = () => { }
         postDesc: postDesc,
         postImage: uploadedUrls,
         createdAt: createdAt()
+      }, ()=> {
+        setRenderNumber(Math.floor(Math.random()*100))
+        setUploading(false)
+        setPostDesc('')
+        setImages(null)
+        setShowCreatePost(false)
       })
-      setUploading(false)
-      setPostDesc('')
-      setImages(null)
-      setShowCreatePost(false)
+
     } else {
       showToast('Please write something')
     }

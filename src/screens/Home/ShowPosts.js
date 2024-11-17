@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native'
 import Post from '../../components/Post'
 import { useAuth } from '../../context/AuthContext'
 
-const ShowPosts = ({ renderCurrentUserOnly = false, }) => {
+const ShowPosts = ({ renderCurrentUserOnly = false, renderNumber=0 }) => {
   const [posts, setPosts] = React.useState([])
   const { user, userData, logout, login, updateUserData } = useAuth();
 
@@ -27,7 +27,7 @@ const ShowPosts = ({ renderCurrentUserOnly = false, }) => {
 
   useEffect(() => {
     fetchPosts()
-  }, [isFocused])
+  }, [isFocused, renderNumber])
 
   return (
     <View>
