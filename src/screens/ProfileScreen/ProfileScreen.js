@@ -138,7 +138,7 @@ const ProfileScreen = () => {
     const userName = userData?.userName || ''
     const userEmail =  userData?.email || ''
     const userBio = userData?.bio || ''
-    const profileImage = {uri : userData?.avatarUrl} || require('../../assets/icons/userProfileIcon.png')
+    const profileImage = userData?.avatarUrl ? {uri : userData?.avatarUrl} : require('../../assets/icons/userProfileIcon.png')
     return (
       <View style={{ paddingVertical: scale(40), paddingHorizontal: scale(16) }} >
         <View style={{ flexDirection: 'row' }} >

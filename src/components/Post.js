@@ -22,7 +22,6 @@ const Post = ({data={}, }) => {
     fetchData()
   },[data])
 
-  console.log('data mmmm', data)
   const profileImage = postUserData?.avatarUrl
   const userNAme = postUserData?.userName || '';
   const creationDate = convertFirestoreTimestamp(data?.createdAt) || ''
