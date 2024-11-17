@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { saveDataToLocalStorage } from '../utilityFunctions/utilityFunctions';
+import { handleLogout, saveDataToLocalStorage } from '../utilityFunctions/utilityFunctions';
 
 // Create the context
 export const AuthContext = createContext();
@@ -12,23 +12,24 @@ export const AuthProvider = ({ children }) => {
 
   // Add your authentication functions
   const login = async (email, password) => {
-    try {
-      setIsLoading(true);
-      // Your login logic here
-      const userData = { id: 1, email, name: 'John Doe' }; // Example data
-      setUser(userData);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
-    } finally {
-      setIsLoading(false);
-    }
+    // try {
+    //   setIsLoading(true);
+    //   // Your login logic here
+    //   const userData = { id: 1, email, name: 'John Doe' }; // Example data
+    //   setUser(userData);
+    //   return { success: true };
+    // } catch (error) {
+    //   return { success: false, error: error.message };
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const logout = async () => {
     try {
       setIsLoading(true);
-      // Your logout logic here
+      handleLogout()
+      setUserData1(null)
       setUser(null);
       return { success: true };
     } catch (error) {

@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert, Dimensions, Linking, PermissionsAndroid } from 'react-native';
 const { height, width } = Dimensions.get('window')
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 
 
@@ -173,15 +174,14 @@ export const scale = (units = 0) => {
   return width / SCREEN_WIDTH * units;
 }
 
-// export const handleLogout = (dispatch = () => { }) => {
-//   // saveDataToLocalStorage('user', null)
-//   // saveDataToLocalStorage('userData', null)
-//   // dispatch(setUserData(null))
-//   // dispatch(setUser(null))
-// }
-// export const consoleMessage = (screenName = '', method = '', data = {}) => {
-//   console.log(screenName, " :: " + method + " ::-> " + JSON.stringify(data))
-// }
+export const handleLogout = (dispatch = () => { }) => {
+  auth().signOut()
+  saveDataToLocalStorage('user', null)
+  saveDataToLocalStorage('userData', null)
+}
+export const consoleMessage = (screenName = '', method = '', data = {}) => {
+  console.log(screenName, " :: " + method + " ::-> " + JSON.stringify(data))
+}
 
 
 

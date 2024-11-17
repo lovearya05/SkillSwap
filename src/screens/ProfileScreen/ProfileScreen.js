@@ -218,7 +218,7 @@ const ProfileScreen = () => {
         <View style={{ flexDirection: 'row' }} >
           <View style={{}} >
             <Image source={profileImage} style={{ height: scale(100), width: scale(100), borderRadius: scale(200) }} />
-            <View style={{ position: 'absolute', bottom: 0, left: scale(70), bottom: scale(5) }} >
+            <View style={{ position: 'absolute', bottom: 0, left: scale(70), bottom: scale(0) }} >
               {editIcon('pic')}
             </View>
           </View>

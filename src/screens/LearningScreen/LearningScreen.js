@@ -67,8 +67,8 @@ const LearningScreen = ({ route }) => {
 
                 <View style={{marginStart: scale(4)}} >
                   {i==0 && (<Text style={[textBlk(10, 200),{ paddingBottom: scale(2), marginLeft: scale(4)}]} >{profileName}</Text>)}
-                  <View style={{backgroundColor: i==0 ? '#EDEFF2' : '#3071FF', paddingHorizontal: scale(16), paddingVertical: scale(8), borderRadius: scale(20)}} >
-                    <Text>{i==0 ? `Hey ${userData?.userName}, how's it going?` : 'Just finished a great book!'}</Text>
+                  <View style={{backgroundColor: i==0 ? '#EDEFF2' : '#3071FF', marginRight: scale(10), paddingHorizontal: scale(16), paddingVertical: scale(8), borderRadius: scale(20)}} >
+                    <Text style={[i==0 ? textBlk(12, 400) : textwhite(12,400),{ }]} >{i==0 ? `Hey ${userData?.userName}, how's it going?` : 'Just finished a great book!'}</Text>
                   </View>
                 </View>
               </View>

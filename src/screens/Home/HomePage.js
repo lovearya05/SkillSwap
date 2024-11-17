@@ -20,7 +20,7 @@ const HomePage = () => {
           {/* search bar  */}
          </View>
 
-         <TouchableOpacity onPress={()=> setShowCreatePost(true)} >
+         <TouchableOpacity style={{marginStart: scale(12)}} onPress={()=> setShowCreatePost(true)} >
           <Image source={require('../../assets/icons/writeIcon.png')} style={{height: scale(30), width: scale(30)}} />
          </TouchableOpacity>
       </View>
