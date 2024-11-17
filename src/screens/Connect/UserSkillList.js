@@ -44,16 +44,25 @@ const UserSkillList = ({ otherUser = '', }) => {
           <View style={{ marginLeft: scale(12) }} >
             <Text style={textBlk(14, 500)} >{profileName}</Text>
             <View style={{ flexDirection: 'row', overflow: 'hidden' }} >
-              {skills.map((item, i) => {
-                return (
-                  <Text numberOfLines={1} key={i} style={[textGry(14, 400), { }]} >{item}</Text>
-                )
-              })}
+            {skills.map((item, i) => {
+                      const isLastItem = i === skills.length - 1; // Check if the current item is the last
+                      return (
+                        <Text
+                          numberOfLines={1}
+                          key={i}
+                          style={[
+                            textGry(12, 300),
+                            { marginRight: scale(4) },
+                          ]}
+                        >
+                          {item + (!isLastItem ? ',' : '')}
+                        </Text>
+                      );
+                    })}
             </View>
           </View>
         </View>
-
-        <TouchableOpacity onPress={handleStartLearning} style={{ opacity: 1, backgroundColor: 'blue', paddingHorizontal: scale(12), paddingVertical: scale(8), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
+        <TouchableOpacity onPress={handleStartLearning} style={{ opacity: 1, backgroundColor: '#3776ff', paddingHorizontal: scale(12), paddingVertical: scale(8), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
           <Text style={[textwhite(16, 500), { textAlign: 'center' }]} >{'Start Learning'}</Text>
         </TouchableOpacity>
       </View>

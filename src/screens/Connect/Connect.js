@@ -67,18 +67,28 @@ const Connect = () => {
                 </View>
 
                 <View>
-                  <Text style={textBlk(14, 500)} >{profileName}</Text>
+                  <Text style={textBlk(13, 500)} >{profileName}</Text>
                   <View style={{ flexDirection: 'row', overflow: 'hidden' }} >
-                    {skills.map((item, i) => {
+                  {skills.map((item, i) => {
+                      const isLastItem = i === skills.length - 1; // Check if the current item is the last
                       return (
-                        <Text numberOfLines={1} key={i} style={[textGry(14, 400), { marginRight: scale(8), }]} >{item}</Text>
-                      )
+                        <Text
+                          numberOfLines={1}
+                          key={i}
+                          style={[
+                            textGry(12, 300),
+                            { marginRight: scale(4) },
+                          ]}
+                        >
+                          {item + (!isLastItem ? ',' : '')}
+                        </Text>
+                      );
                     })}
                   </View>
                 </View>
 
                 {/* connect button  */}
-                <TouchableOpacity disabled={isUserConnected} onPress={() => ConnectToUser(item)} style={{ opacity: isUserConnected ? 0.8 : 1, backgroundColor: isUserConnected ? 'green' : 'blue', paddingVertical: scale(4), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
+                <TouchableOpacity disabled={isUserConnected} onPress={() => ConnectToUser(item)} style={{ opacity: isUserConnected ? 0.8 : 1, backgroundColor: isUserConnected ? '#16c6ed' : '#3776ff', paddingVertical: scale(4), marginHorizontal: scale(16), borderRadius: scale(4), marginVertical: scale(8) }} >
                   <Text style={[textwhite(16, 500), { textAlign: 'center' }]} >{isUserConnected ? 'Connected' : 'Connect'}</Text>
                 </TouchableOpacity>
               </View>
