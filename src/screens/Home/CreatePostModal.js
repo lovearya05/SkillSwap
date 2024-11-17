@@ -1,4 +1,4 @@
-import { View, Text, Modal, Image, SafeAreaView, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, Image, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { createdAt, createNewDocument, requestStoragePermission, scale, showToast } from '../../utilityFunctions/utilityFunctions'
 import { textBlk, textwhite } from '../../components/baseStyleSheet'
@@ -149,37 +149,49 @@ const CreatePostModal = ({ showCreatePost = false, setShowCreatePost = () => { }
         animationType="fade"
         onRequestClose={() => setShowCreatePost(false)}
       >
-        <View style={{ marginTop: scale(40), backgroundColor: '#fff', paddingHorizontal: scale(16), paddingVertical: scale(14) }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-
-            <TouchableOpacity onPress={() => setShowCreatePost(false)} >
-              <Image source={require('../../assets/icons/closeIcon.png')} style={{ height: scale(30), width: scale(30) }} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={uploadImages} style={{ backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center', paddingHorizontal: scale(16), borderRadius: scale(30) }} >
-              <Text style={textwhite(16, 600)} >Post</Text>
+        <View style={styles.modalContent}>
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>New Post</Text>
+            <TouchableOpacity onPress={() => setShowCreatePost(false)} style={styles.closeButton}>
+              <Image source={require('../../assets/icons/closeIcon.png')} style={styles.closeIcon} />
             </TouchableOpacity>
           </View>
 
-          <View style={{ paddingVertical: scale(4) }} >
+          {/* Input Area */}
+          <View style={styles.inputContainer}>
             <InputBox
-              placeholderText='What do you want to talk about?'
-              height={200}
+              placeholderText="What's on your mind?"
+              height={150}
               value={postDesc}
               setValue={setPostDesc}
+              multiline
               useLightTheme={true}
+              style={styles.input}
             />
-            <View style={{ flexDirection: 'row' }} >
-              {images && images.map((item, i) => {
-                return (
-                  <View key={i} style={{ marginRight: scale(8) }} >
-                    <Image source={{ uri: item.uri.uri }} style={{ height: scale(100), width: scale(100) }} />
-                  </View>
-                )
-              })}
+
+            {/* Images Preview */}
+            <View style={styles.imagePreviewContainer}>
+              {images && images.map((item, i) => (
+                <View key={i} style={styles.previewImage}>
+                  <Image source={{ uri: item.uri.uri }} style={styles.imageThumb} />
+                </View>
+              ))}
             </View>
-            <TouchableOpacity onPress={pickImage} >
-              <Image source={require('../../assets/icons/gallery.png')} style={{ height: scale(30), width: scale(30) }} />
+          </View>
+
+          {/* Bottom Action Bar */}
+          <View style={styles.actionBar}>
+            <View style={styles.actionButtons}>
+              <TouchableOpacity onPress={pickImage} style={styles.actionButton}>
+                <Image source={require('../../assets/icons/gallery.png')} style={styles.actionIcon} />
+                <Text style={styles.actionCount}>Upload Images</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Post Button */}
+            <TouchableOpacity onPress={uploadImages} style={styles.postButton}>
+              <Text style={styles.postButtonText}>Post</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -190,3 +202,98 @@ const CreatePostModal = ({ showCreatePost = false, setShowCreatePost = () => { }
 }
 
 export default CreatePostModal
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  loadingContainer: {
+    height: '100%',
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modalContent: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000',
+  },
+  closeButton: {
+    padding: 8,
+  },
+  closeIcon: {
+    height: scale(24),
+    width: scale(24),
+  },
+  inputContainer: {
+    flex: 1,
+    padding: 16,
+  },
+  input: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    padding: 12,
+  },
+  imagePreviewContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 16,
+  },
+  previewImage: {
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  imageThumb: {
+    height: scale(80),
+    width: scale(80),
+    borderRadius: 8,
+  },
+  actionBar: {
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 16,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  actionIcon: {
+    height: scale(24),
+    width: scale(24),
+    marginRight: 4,
+  },
+  actionCount: {
+    fontSize: 14,
+    color: '#666',
+  },
+  postButton: {
+    backgroundColor: '#0066ff',
+    borderRadius: 24,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  postButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
