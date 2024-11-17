@@ -12,6 +12,8 @@ import { useAuth } from '../context/AuthContext';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import HomePage from '../screens/Home/HomePage';
 import Connect from '../screens/Connect/Connect';
+import LearningScreen from '../screens/LearningScreen/LearningScreen';
+import JitsiMeet from '../screens/jitsiMeet/JitsiMeet';
 
 const Tab = createBottomTabNavigator();
 
@@ -103,6 +105,8 @@ const ConnectionsStackNavigator = () => {
       headerShown: false
     }} >
       <HomeStack.Screen name="Connect" component={Connect} />
+      <HomeStack.Screen name="LearningScreen" component={LearningScreen} />
+      <HomeStack.Screen name="JitsiMeet" component={JitsiMeet} />
     </HomeStack.Navigator>
   );
 };
