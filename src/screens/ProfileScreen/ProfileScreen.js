@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ScrollView, FlatList, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { } from 'react-native-svg'
 import { textBlk, textGry, textwhite } from '../../components/baseStyleSheet'
@@ -25,6 +25,24 @@ const ProfileScreen = () => {
   useEffect(() => {
     fetchUsers()
   }, [userData, isFocused])
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Logout Confirmation",
+      "Are you sure, you want to Logout of your account?",
+      [
+        {
+          text: "No",
+          style: "cancel"
+        },
+        { 
+          text: "Yes", 
+          onPress: () => logout()
+        }
+      ],
+      { cancelable: false }
+    );
+  };
 
   const fetchUsers = async () => {
     const data = await getDataFromFireBase('users')
@@ -166,6 +184,30 @@ const ProfileScreen = () => {
       </TouchableOpacity>
     )
   }
+
+  const LogoutButton = () => {
+    return (
+      <TouchableOpacity 
+        onPress={handleLogout}
+        style={{ 
+          position: 'absolute',
+          right: scale(16),
+          top: scale(16),
+          zIndex: 1,
+          padding: scale(8)
+        }}
+      >
+        <Image 
+          source={require('../../assets/ImageIcons/Logout_Icon.png')}
+          style={{ 
+            height: scale(24),
+            width: scale(24)
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
+
   const userProfileDetails = () => {
     const userName = userData?.userName || ''
     const userEmail = userData?.email || ''
@@ -287,25 +329,27 @@ const ProfileScreen = () => {
 
 
   return (
-    <ScrollView>
+    <View style={{ flex: 1 }}>
+      <LogoutButton />
+      <ScrollView>
+        <AddSkillModal addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
+        <EditProfileModalDetails  addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
 
-      <AddSkillModal addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
-      <EditProfileModalDetails  addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
+        <HorizontalLine />
+        {userProfileDetails()}
+        {/* <HorizontalLine/> */}
+        {skillsSection()}
+        {/* <HorizontalLine/> */}
+        {skillsOfInterest()}
+        <HorizontalLine />
+        {suggestedProfiles()}
+        <HorizontalLine />
+        <ShowPosts renderCurrentUserOnly={true} />
+        <View>
 
-      <HorizontalLine />
-      {userProfileDetails()}
-      {/* <HorizontalLine/> */}
-      {skillsSection()}
-      {/* <HorizontalLine/> */}
-      {skillsOfInterest()}
-      <HorizontalLine />
-      {suggestedProfiles()}
-      <HorizontalLine />
-      <ShowPosts renderCurrentUserOnly={true} />
-      <View>
-
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
   )
 }
 
