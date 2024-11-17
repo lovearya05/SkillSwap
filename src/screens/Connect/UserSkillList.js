@@ -36,12 +36,11 @@ const UserSkillList = ({ otherUser = '', }) => {
   const skills = otherUserData?.skills || []
 
   return (
-    <View>
+    <View >
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }} >
-        <View style={{ flexDirection: 'row', paddingVertical: scale(18), paddingHorizontal: scale(16) }} >
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: scale(16) }} >
+        <View style={{ flexDirection: 'row', paddingVertical: scale(18), width: scale(200) }} >
           <Image source={profileImage} style={{ height: scale(45), width: scale(45), borderRadius: scale(200) }} />
-
           <View style={{ marginLeft: scale(12) }} >
             <Text style={textBlk(14, 500)} >{profileName}</Text>
             <View style={{ flexDirection: 'row', overflow: 'hidden' }} >
