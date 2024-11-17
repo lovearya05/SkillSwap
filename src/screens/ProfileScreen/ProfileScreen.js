@@ -10,6 +10,7 @@ import Post from '../../components/Post'
 import HorizontalLine from '../../components/HorizontalLine'
 import ShowPosts from '../Home/ShowPosts'
 import { useIsFocused } from '@react-navigation/native'
+import EditProfileModalDetails from './EditProfileModalDetails'
 
 
 const ProfileScreen = () => {
@@ -17,6 +18,7 @@ const ProfileScreen = () => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [users, setUsers] = useState([])
+  const { user, userData, logout, login, updateUserData } = useAuth();
 
   const isFocused = useIsFocused();
 
@@ -30,7 +32,6 @@ const ProfileScreen = () => {
     if (data) setUsers(data.filter((usr) => usr.email != userData.email));
   }
 
-  const { user, userData, logout, login, updateUserData } = useAuth();
 
   const handleAddSkill = (imageUrl = '') => {
     if (userData.email) {
@@ -129,9 +130,6 @@ const ProfileScreen = () => {
     }
   };
 
-  const handleEditProfileName = () => {
-    handleUpdateUser()
-  }
 
   const ConnectToUser = (connectionTo = {}) => {
     const connectedData = userData['connectedUser'] || []
@@ -154,7 +152,7 @@ const ProfileScreen = () => {
     return (
       <TouchableOpacity onPress={() => {
         if (type === 'name') {
-          handleEditProfileName
+          setAddSkillType('editName')
         } else if (type === 'pic') {
           pickImage()
         } else if (type === 'skills') {
@@ -184,13 +182,14 @@ const ProfileScreen = () => {
           <View style={{ paddingHorizontal: scale(20) }} >
             <View style={{ flexDirection: 'row', }} >
               <Text style={textBlk(16, 800)} >{userName}</Text>
-              {editIcon()}
+              {editIcon('name')}
             </View>
             <Text style={textGry(14, 500)} >{userEmail}</Text>
           </View>
         </View>
-
-        <Text style={textBlk(12, 400)} >{userBio}</Text>
+        <View style={{paddingVertical: scale(12)}} >
+          <Text style={textBlk(12, 400)} >{userBio}</Text>
+        </View>
       </View>
     )
   }
@@ -290,6 +289,7 @@ const ProfileScreen = () => {
     <ScrollView>
 
       <AddSkillModal addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
+      <EditProfileModalDetails  addSkillType={addSkillType} setAddSkillType={setAddSkillType} />
 
       <HorizontalLine />
       {userProfileDetails()}

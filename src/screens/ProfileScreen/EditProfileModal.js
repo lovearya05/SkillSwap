@@ -12,7 +12,7 @@ import { textBlk } from '../../components/baseStyleSheet';
 import { handleUpdateUser, scale } from '../../utilityFunctions/utilityFunctions';
 import { useAuth } from '../../context/AuthContext';
 
-const AddSkillModal = ({ addSkillType = '', setAddSkillType, onClose, onAddSkill }) => {
+const AddSkillModal = ({ addSkillType = '', setAddSkillType, }) => {
   const [skillName, setSkillName] = useState('');
   const [skillsList, setSkillList] = useState([]);
 
